@@ -103,15 +103,26 @@ h1,h2{font-family:inherit;font-weight:700;margin:0;letter-spacing:-.018em}
   pointer-events:none;transform-origin:0 0;
   transition:transform .2s ease,color .2s ease;
 }
-.f input:focus~label,.f textarea:focus~label,.f select:focus~label,
+.f input:focus~label,.f:not(.area) textarea:focus~label,.f select:focus~label,
 .f input:not([type=date]):not(:placeholder-shown)~label,
-.f textarea:not(:placeholder-shown)~label,
+.f:not(.area) textarea:not(:placeholder-shown)~label,
 .f.filled>label{transform:translateY(-22px) scale(.72);color:var(--dimmer)}
 .f input:focus,.f textarea:focus,.f select:focus{border-bottom-color:#fff;border-bottom-width:1.5px}
-.f input:focus~label,.f textarea:focus~label,.f select:focus~label{color:#fff}
+.f input:focus~label,.f:not(.area) textarea:focus~label,.f select:focus~label{color:#fff}
 .f input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.65;cursor:pointer}
 .f:not(.filled) input[type=date]:not(:focus)::-webkit-datetime-edit{color:transparent}
 .f .note{font-size:12px;color:var(--dimmer);margin-top:8px}
+
+/* довгі відповіді: підпис стоїть над полем, а поле росте під текст —
+   інакше лінія висить за десятки пікселів під першим рядком */
+.f.area{padding-top:22px;display:flex;flex-direction:column}
+.f.area>label{
+  position:static;transform:none;order:-1;margin-bottom:10px;
+  font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--dim);
+}
+.f.area textarea{padding:0 0 10px;min-height:52px;resize:none;overflow:hidden}
+.f.area textarea:focus~label{color:#fff}
 .req{color:#fff}
 /* автозаповнення Chrome інакше заливає поле білим */
 .f input:-webkit-autofill,.f input:-webkit-autofill:focus{
@@ -412,16 +423,16 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
         <p class="hint">Ці три відповіді комісія читає перед співбесідою. Пишіть своїми словами — правильних формулювань тут немає.</p>
 
         <div class="fields">
-          <div class="f">
-            <textarea id="motivation" name="motivation" placeholder=" " rows="4"></textarea>
+          <div class="f area">
+            <textarea id="motivation" name="motivation" rows="2"></textarea>
             <label for="motivation">Чому ви хочете навчатися саме тут</label>
           </div>
-          <div class="f">
-            <textarea id="application" name="application" placeholder=" " rows="4"></textarea>
+          <div class="f area">
+            <textarea id="application" name="application" rows="2"></textarea>
             <label for="application">Як бачите застосування цієї освіти у житті та служінні</label>
           </div>
-          <div class="f">
-            <textarea id="ministry_experience" name="ministry_experience" placeholder=" " rows="4"></textarea>
+          <div class="f area">
+            <textarea id="ministry_experience" name="ministry_experience" rows="2"></textarea>
             <label for="ministry_experience">Досвід церковного служіння або волонтерства</label>
           </div>
         </div>
@@ -547,13 +558,22 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
   const dots   = Array.from(document.querySelectorAll('#dots li'));
   const done   = document.getElementById('done');
   const submit = document.getElementById('submit');
+  const areas  = Array.from(form.querySelectorAll('.f.area textarea'));
   const TOTAL  = steps.length;
   let current  = 0;
 
   /* ---------------- навігація розділами ---------------- */
 
+  /* висота порожнього поля рахується лише коли розділ видимий */
+  function grow(t) {
+    if (!t.offsetParent) return;
+    t.style.height = 'auto';
+    t.style.height = t.scrollHeight + 'px';
+  }
+
   function paint() {
     steps.forEach((s, i) => s.classList.toggle('is-active', i === current));
+    areas.forEach(grow);
     dots.forEach((li, i) => {
       if (i <= current) li.dataset.state = i < current ? 'done' : 'now';
       else li.removeAttribute('data-state');
@@ -654,6 +674,11 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
     if (g) g.classList.remove('invalid');
     const c = e.target.closest('.check');
     if (c) c.classList.remove('invalid');
+  });
+
+  /* довга відповідь росте під текст, щоб лінія трималася під останнім рядком */
+  areas.forEach(function (t) {
+    t.addEventListener('input', function () { grow(t); });
   });
 
   /* date/select не мають :placeholder-shown — рухаємо мітку вручну */
