@@ -1,281 +1,234 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uk">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Вступна анкета — Львівська Богословська Семінарія</title>
 <meta name="description" content="Анкета вступника Львівської Богословської Семінарії. Заповнення займає 5–7 хвилин.">
-<meta name="theme-color" content="#320000">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23320000'/%3E%3Cg fill='%23fff'%3E%3Crect x='14.6' y='6' width='2.8' height='17'/%3E%3Crect x='9.5' y='10.4' width='13' height='2.6'/%3E%3Crect x='7' y='24' width='18' height='2.4' rx='1.2'/%3E%3C/g%3E%3C/svg%3E">
+<meta name="theme-color" content="#6f6b67">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23120f0e'/%3E%3Cg fill='%23fff'%3E%3Crect x='14.6' y='6' width='2.8' height='17'/%3E%3Crect x='9.5' y='10.4' width='13' height='2.6'/%3E%3Crect x='7' y='24' width='18' height='2.4' rx='1.2'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Spectral:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
 <style>
+/* =========================================================================
+   Екран зі зразка: металеве тло на всю сторінку, білий текст, поля лише
+   з нижньою лінією, чорна pill-кнопка дії і біла — другорядна.
+   Верстка mobile-first: базові правила = телефон, media лише min-width.
+   ========================================================================= */
 :root{
-  --oxblood:#320000;
-  --wine:#8a2b28;
-  --clay:#7d6162;
-  --haze:#7b6e6f;
-  --silver:#948889;   /* межі полів і кнопок: 3.2:1 до тла */
-  --mist:#e8e3e2;
-  --paper:#faf9f9;
-  --bone:#fdfbf9;
-  --ink:#2b2223;
-  --muted:#736667;
-  --gilt:#a8802f;
-  --gilt-ink:#8f6a22; /* та сама позолота, але придатна для тексту */
-  --pad:clamp(22px,5vw,64px);
+  color-scheme:dark;              /* календар і список select — у темній схемі */
+  --ink:#100e0d;                  /* чорна кнопка та текст на білому */
+  --line:rgba(255,255,255,.58);   /* лінія поля */
+  --line-soft:rgba(255,255,255,.28);
+  --dim:rgba(255,255,255,.82);    /* другорядний текст */
+  --dimmer:rgba(255,255,255,.68);
+  --warn:#ffd7cd;
+  --pad:22px;
   --r:999px;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
+
 body{
-  margin:0;background:var(--paper);color:var(--ink);
-  font-family:"Manrope",-apple-system,"Segoe UI",Roboto,sans-serif;
-  font-size:16px;line-height:1.55;
+  margin:0;min-height:100svh;color:#fff;
+  font-family:"Montserrat",-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:16px;line-height:1.5;letter-spacing:.005em;
   -webkit-font-smoothing:antialiased;
+  background:#807c78;
 }
-h1,h2,h3{font-family:"Spectral",Georgia,serif;font-weight:600;margin:0;letter-spacing:-.015em}
-p{margin:0}
-::selection{background:var(--oxblood);color:#fff}
-
-/* ---------- shell ---------- */
-.shell{display:grid;grid-template-columns:minmax(340px,38%) 1fr;min-height:100vh;min-height:100svh}
-
-/* ---------- aside: the metallic panel from the reference ---------- */
-.aside{
-  position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;
-  padding:var(--pad);display:flex;flex-direction:column;color:#fff;
+/* металеве тло: тепле світло згори праворуч, холодна тінь у кутах */
+.bg{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:
-    radial-gradient(62% 44% at 90% 14%, rgba(255,242,228,.34) 0%, rgba(255,242,228,0) 62%),
-    linear-gradient(151deg,#1a0202 0%,#380f0f 22%,#6b4849 43%,#9b8484 53%,#6d4342 64%,#3d1211 80%,#1c0303 100%);
+    linear-gradient(180deg,rgba(16,16,18,.24) 0%,rgba(16,16,18,.30) 45%,rgba(16,16,18,.42) 100%),
+    radial-gradient(115% 62% at 88% 4%, rgba(255,246,232,.55) 0%, rgba(255,246,232,0) 58%),
+    radial-gradient(80% 46% at 4% 26%, rgba(255,255,255,.30) 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(90% 50% at 50% 104%, rgba(28,26,26,.42) 0%, rgba(28,26,26,0) 70%),
+    linear-gradient(158deg,#9b9793 0%,#b4afa9 15%,#86827e 34%,#9e9995 52%,#78746f 72%,#565350 100%);
 }
-.aside::after{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(120deg,rgba(20,1,1,.5) 0%,rgba(20,1,1,.14) 46%,rgba(20,1,1,.4) 100%);
+p{margin:0}
+::selection{background:#fff;color:var(--ink)}
+a{color:#fff}
+
+/* ---------- каркас екрана ---------- */
+.app{
+  min-height:100svh;display:flex;flex-direction:column;
+  padding:calc(env(safe-area-inset-top) + 20px) var(--pad)
+          calc(env(safe-area-inset-bottom) + 26px);
+  max-width:520px;margin:0 auto;width:100%;
 }
-.aside>*{position:relative;z-index:2}
-.watermark{
-  position:absolute;z-index:1;right:5%;bottom:5%;width:min(32%,170px);
-  color:#fff;opacity:.10;pointer-events:none;
-}
-.watermark svg{width:100%;height:auto;display:block}
+.top{display:flex;align-items:center;gap:11px;flex:none}
+.top .mark{width:34px;flex:none;color:#fff}
+.top .mark svg{width:100%;height:auto;display:block}
+.top .name{font-size:11.5px;line-height:1.3;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--dim);max-width:20ch}
+.sheet{flex:1;display:flex;flex-direction:column;padding-top:34px}
+.foot{flex:none;padding-top:34px;font-size:13.5px;color:var(--dim)}
 
-.brand{display:flex;align-items:center;gap:14px}
-.brand .mark{width:62px;flex:none;color:#fff}
-.brand .mark svg{width:100%;height:auto;display:block}
-.brand .name{
-  font-family:"Spectral",Georgia,serif;font-size:15.5px;line-height:1.26;font-weight:500;
-  letter-spacing:.005em;max-width:12ch;
-}
+/* ---------- заголовок кроку ---------- */
+.count{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--dimmer)}
+h1,h2{font-family:inherit;font-weight:700;margin:0;letter-spacing:-.018em}
+.step h2,.done h2{font-size:31px;line-height:1.14;margin-top:9px}
+.step h2:focus,.done h2:focus,.done:focus{outline:none}
+.hint{margin-top:12px;font-size:14px;line-height:1.55;color:var(--dim);max-width:40ch}
 
-.aside-body{margin-top:auto;padding-top:44px}
-.aside h1{font-size:clamp(32px,4.1vw,50px);line-height:1.03;font-weight:600}
-.lede{margin-top:18px;max-width:34ch;font-size:15.5px;line-height:1.62;color:rgba(255,255,255,.88)}
+/* смуга прогресу: шість сегментів, по одному на розділ */
+.dots{display:flex;gap:5px;margin-top:22px;list-style:none;padding:0}
+.dots li{flex:1;height:3px;border-radius:2px;background:var(--line-soft);
+  transition:background .35s ease}
+.dots li[data-state]{background:#fff}
 
-.facts{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:24px}
-.fact{
-  font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:var(--r);
-  border:1px solid rgba(255,255,255,.36);color:rgba(255,255,255,.94);
-}
-
-/* step rail — this content really is a sequence, so it is numbered */
-.rail{margin:34px 0 0;padding:0;list-style:none;counter-reset:s;max-width:26ch}
-.rail li{
-  counter-increment:s;display:flex;align-items:center;gap:13px;
-  padding:4px 0;font-size:13.5px;color:rgba(255,255,255,.62);
-  transition:color .3s ease;
-}
-.rail li::before{
-  content:counter(s);flex:none;width:23px;height:23px;border-radius:50%;
-  display:grid;place-items:center;font-size:11px;font-weight:700;line-height:1;
-  border:1px solid rgba(255,255,255,.34);color:rgba(255,255,255,.72);
-  transition:background .3s ease,color .3s ease,border-color .3s ease;
-}
-.rail li[data-state="done"]{color:rgba(255,255,255,.8)}
-.rail li[data-state="done"]::before{
-  content:"✓";font-size:12px;
-  background:rgba(255,255,255,.92);border-color:rgba(255,255,255,.92);color:var(--oxblood);
-}
-.rail li[data-state="now"]{color:#fff;font-weight:600}
-.rail li[data-state="now"]::before{background:#fff;border-color:#fff;color:var(--oxblood)}
-
-/* ---------- form column ---------- */
-.main{display:flex;flex-direction:column;background:var(--paper);min-width:0}
-.progress{position:sticky;top:0;z-index:5;height:3px;background:var(--mist)}
-.progress i{display:block;height:100%;width:16.67%;background:var(--oxblood);transition:width .45s cubic-bezier(.4,0,.2,1)}
-.wrap{width:100%;max-width:610px;margin:0 auto;padding:clamp(38px,6vw,76px) var(--pad) 96px}
-
-.step{display:none}
-.step.is-active{display:block;animation:rise .42s cubic-bezier(.22,.8,.3,1) both}
-@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-
-.step-count{font-size:13px;font-weight:600;color:var(--haze)}
-.step h2:focus{outline:none}
-.step h2{font-size:clamp(27px,3.4vw,36px);margin-top:6px;color:var(--oxblood)}
-.step .hint{margin-top:10px;color:var(--muted);font-size:14.5px;max-width:46ch;line-height:1.6}
-.fields{margin-top:34px;display:flex;flex-direction:column;gap:8px}
-
-/* ---------- underline fields, as on the reference screen ---------- */
+/* ---------- поля: тільки нижня лінія, як на зразку ---------- */
+.fields{margin-top:30px;display:flex;flex-direction:column;gap:6px}
 .f{position:relative;padding-top:4px}
 .f input:not([type=checkbox]):not([type=radio]):not([type=file]),
 .f textarea,.f select{
-  width:100%;font:inherit;font-size:16px;color:var(--ink);
-  background:transparent;border:0;border-bottom:1px solid var(--silver);
-  border-radius:0;padding:28px 0 10px;outline:none;
-  transition:border-color .22s ease;
+  width:100%;font:inherit;font-size:16px;color:#fff;
+  background:transparent;border:0;border-bottom:1px solid var(--line);
+  border-radius:0;padding:26px 0 10px;outline:none;
+  transition:border-color .2s ease;
 }
-.f textarea{resize:vertical;min-height:104px;line-height:1.62}
+.f textarea{resize:vertical;min-height:96px;line-height:1.6}
 .f select{appearance:none;-webkit-appearance:none;cursor:pointer}
+.f select option{background:#2c2926;color:#fff}
 .f.sel::after{
-  content:"";position:absolute;right:3px;bottom:21px;width:7px;height:7px;
-  border-right:1.6px solid var(--clay);border-bottom:1.6px solid var(--clay);
+  content:"";position:absolute;right:3px;bottom:20px;width:7px;height:7px;
+  border-right:1.6px solid rgba(255,255,255,.8);border-bottom:1.6px solid rgba(255,255,255,.8);
   transform:rotate(45deg);pointer-events:none;
 }
 .f>label{
-  position:absolute;left:0;top:28px;font-size:16px;color:var(--haze);
+  position:absolute;left:0;top:26px;font-size:16px;color:var(--dim);
   pointer-events:none;transform-origin:0 0;
   transition:transform .2s ease,color .2s ease;
 }
 .f input:focus~label,.f textarea:focus~label,.f select:focus~label,
-.f input:not([type=date]):not(:placeholder-shown)~label,.f textarea:not(:placeholder-shown)~label,
-.f.filled>label{transform:translateY(-23px) scale(.72);color:var(--clay)}
-.f input:focus,.f textarea:focus,.f select:focus{border-bottom-color:var(--oxblood);border-bottom-width:1.5px}
-.f input:focus~label,.f textarea:focus~label,.f select:focus~label{color:var(--oxblood)}
-.f input[type=date]::-webkit-calendar-picker-indicator{opacity:.4;cursor:pointer}
+.f input:not([type=date]):not(:placeholder-shown)~label,
+.f textarea:not(:placeholder-shown)~label,
+.f.filled>label{transform:translateY(-22px) scale(.72);color:var(--dimmer)}
+.f input:focus,.f textarea:focus,.f select:focus{border-bottom-color:#fff;border-bottom-width:1.5px}
+.f input:focus~label,.f textarea:focus~label,.f select:focus~label{color:#fff}
+.f input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.65;cursor:pointer}
 .f:not(.filled) input[type=date]:not(:focus)::-webkit-datetime-edit{color:transparent}
-.f .aside-note{font-size:12.5px;color:var(--muted);margin-top:9px}
-.req{color:var(--wine)}
+.f .note{font-size:12px;color:var(--dimmer);margin-top:8px}
+.req{color:#fff}
+/* автозаповнення Chrome інакше заливає поле білим */
+.f input:-webkit-autofill,.f input:-webkit-autofill:focus{
+  -webkit-text-fill-color:#fff;caret-color:#fff;
+  transition:background-color 9999s linear;
+}
 
-/* grouped choice questions */
+/* ---------- варіанти відповіді: капсули ---------- */
 fieldset{border:0;margin:0;padding:0;min-width:0}
-.group{padding:26px 0 6px}
-.group>.q{display:block;float:none;width:100%;padding:0;
-  font-size:14px;font-weight:600;color:var(--clay);margin-bottom:14px}
-.opts{display:flex;flex-wrap:wrap;gap:9px}
+.group{margin-top:22px;padding:0 0 4px}   /* padding-top у fieldset лягає під legend, тому margin */
+.group>.q{display:block;float:none;width:100%;padding:0;margin-bottom:13px;
+  font-size:13px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--dim)}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
 .opt{position:relative}
 .opt input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
 .opt span{
-  display:block;padding:10px 18px;border-radius:var(--r);border:1px solid var(--silver);
-  font-size:14.5px;color:var(--ink);background:#fff;transition:.18s ease;user-select:none;
+  display:block;padding:10px 17px;border-radius:var(--r);
+  border:1px solid var(--line);background:rgba(255,255,255,.10);
+  font-size:14px;color:#fff;transition:.18s ease;user-select:none;
 }
-.opt:hover span{border-color:var(--clay)}
-.opt input:checked~span{background:var(--oxblood);border-color:var(--oxblood);color:#fff;font-weight:600}
-.opt input:focus-visible~span{outline:2px solid var(--oxblood);outline-offset:2px}
+.opt input:checked~span{background:#fff;border-color:#fff;color:var(--ink);font-weight:600}
+.opt input:focus-visible~span{outline:2px solid #fff;outline-offset:3px}
 
-/* square checkbox, as on the reference */
-.check{display:flex;gap:14px;align-items:flex-start;padding:7px 0;cursor:pointer;position:relative}
+/* квадратний чекбокс зі зразка */
+.check{display:flex;gap:13px;align-items:flex-start;padding:6px 0;cursor:pointer;position:relative}
 .check input{position:absolute;opacity:0;width:0;height:0}
 .check .box{
-  flex:none;width:23px;height:23px;border-radius:5px;border:1.4px solid var(--silver);
-  background:#fff;margin-top:1px;display:grid;place-items:center;transition:.16s ease;
+  flex:none;width:24px;height:24px;border-radius:6px;border:1.5px solid var(--line);
+  background:rgba(255,255,255,.10);margin-top:1px;display:grid;place-items:center;transition:.16s ease;
 }
 .check .box::after{
   content:"";width:11px;height:6px;margin-top:-3px;
-  border-left:2px solid #fff;border-bottom:2px solid #fff;
+  border-left:2.2px solid var(--ink);border-bottom:2.2px solid var(--ink);
   transform:rotate(-45deg) scale(.4);opacity:0;transition:.16s ease;
 }
-.check input:checked~.box{background:var(--oxblood);border-color:var(--oxblood)}
+.check input:checked~.box{background:#fff;border-color:#fff}
 .check input:checked~.box::after{opacity:1;transform:rotate(-45deg) scale(1)}
-.check input:focus-visible~.box{outline:2px solid var(--oxblood);outline-offset:3px}
-.check.invalid .box{border-color:var(--wine)}
-.check .txt{font-size:14.5px;line-height:1.55}
+.check input:focus-visible~.box{outline:2px solid #fff;outline-offset:3px}
+.check.invalid .box{border-color:var(--warn)}
+.check .txt{font-size:13.5px;line-height:1.5;color:var(--dim)}
 
-/* photo */
-.file{margin-top:10px;position:relative}
+/* ---------- фото ---------- */
+.file{margin-top:12px;position:relative}
 .file input{position:absolute;opacity:0;width:1px;height:1px}
 .file .drop{
-  display:flex;align-items:center;gap:14px;padding:15px 18px;border-radius:16px;
-  border:1px dashed var(--silver);background:#fff;cursor:pointer;transition:.18s ease;
+  display:flex;align-items:center;gap:13px;padding:14px 16px;border-radius:18px;
+  border:1px dashed var(--line);background:rgba(255,255,255,.08);cursor:pointer;transition:.18s ease;
 }
-.file .drop:hover{border-color:var(--clay);background:var(--bone)}
-.file input:focus-visible~.drop{outline:2px solid var(--oxblood);outline-offset:2px}
-.file .ico{width:36px;height:36px;flex:none;border-radius:11px;background:var(--mist);
-  display:grid;place-items:center;color:var(--clay);overflow:hidden}
+.file .drop:hover{background:rgba(255,255,255,.16)}
+.file input:focus-visible~.drop{outline:2px solid #fff;outline-offset:2px}
+.file .ico{width:36px;height:36px;flex:none;border-radius:12px;background:rgba(255,255,255,.18);
+  display:grid;place-items:center;color:#fff;overflow:hidden}
 .file .ico img{width:100%;height:100%;object-fit:cover;display:block}
-.file .lbl{font-size:14.5px;font-weight:600}
-.file .sub{font-size:12.5px;color:var(--muted)}
+.file .lbl{font-size:14px;font-weight:600}
+.file .sub{font-size:12px;color:var(--dimmer)}
 
-/* honeypot: off-screen, never display:none */
+/* пастка для ботів: за екраном, ніколи не display:none */
 .hp{position:absolute;left:-9999px;top:0;width:1px;height:1px;overflow:hidden}
 
-/* nav */
-.nav{display:flex;gap:12px;margin-top:42px;align-items:center}
+/* ---------- кнопки: чорна pill і біла pill, як на зразку ---------- */
+.nav{display:flex;flex-direction:column-reverse;gap:11px;margin-top:38px}
 .btn{
   font:inherit;font-weight:600;font-size:15.5px;border-radius:var(--r);cursor:pointer;
-  padding:0 30px;height:56px;display:inline-flex;align-items:center;justify-content:center;
+  width:100%;min-height:58px;padding:0 26px;border:1px solid transparent;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
   transition:background .18s ease,color .18s ease,border-color .18s ease,transform .12s ease;
 }
-.btn:focus-visible{outline:2px solid var(--oxblood);outline-offset:3px}
-.btn-primary{flex:1;background:var(--oxblood);color:#fdf8f5;border:1px solid var(--oxblood)}
-.btn-primary:hover{background:#4b1010;border-color:#4b1010}
-.btn-primary:active{transform:translateY(1px)}
-.btn-primary[disabled]{opacity:.6;cursor:progress}
-.btn-ghost{background:#fff;color:var(--ink);border:1px solid var(--silver)}
-.btn-ghost:hover{border-color:var(--clay)}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--ink);color:#fff;box-shadow:0 12px 26px rgba(16,14,13,.34)}
+.btn-primary:hover{background:#241f1d}
+.btn-primary[disabled]{opacity:.65;cursor:progress}
+.btn-ghost{background:#fff;color:var(--ink);box-shadow:0 10px 22px rgba(16,14,13,.18)}
+.btn-ghost:hover{background:#f1ede9}
 
-.err{margin-top:18px;font-size:14px;color:var(--wine);border-left:2px solid var(--wine);
-  padding-left:13px;display:none}
+.err{margin-top:18px;font-size:13.5px;color:var(--warn);
+  border-left:2px solid var(--warn);padding-left:12px;display:none}
 .err.on{display:block}
-.invalid{border-bottom-color:var(--wine)!important}
-.group.invalid{border-bottom:0}
-.group.invalid>.q{color:var(--wine)}
+.invalid{border-bottom-color:var(--warn)!important}
+.group.invalid>.q{color:var(--warn)}
 
-/* ---------- success ---------- */
-.done{display:none;padding-top:8px}
-.done:focus{outline:none}
+/* ---------- кроки ---------- */
+.step{display:none}
+.step.is-active{display:block;animation:rise .4s cubic-bezier(.22,.8,.3,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ---------- екран подяки ---------- */
+.done{display:none}
 .done.on{display:block;animation:rise .5s cubic-bezier(.22,.8,.3,1) both}
-.seal{
-  width:98px;height:98px;border-radius:50%;display:grid;place-items:center;
-  border:1px solid var(--gilt);color:var(--oxblood);margin-bottom:34px;
-  box-shadow:0 0 0 7px rgba(168,128,47,.09);
-}
-.seal svg{width:54px;height:auto;display:block}
-.done h2{font-size:clamp(30px,3.8vw,40px);color:var(--oxblood)}
-.done>p{margin-top:16px;color:var(--muted);max-width:44ch;line-height:1.68}
-.next{margin:34px 0 0;padding:0;list-style:none;border-top:1px solid var(--mist);max-width:44ch}
-.next li{padding:15px 0;border-bottom:1px solid var(--mist);font-size:14.5px;display:flex;gap:15px;line-height:1.5}
-.next li b{font-family:"Spectral",Georgia,serif;font-weight:600;color:var(--gilt-ink);flex:none;width:20px}
+.seal{width:82px;height:82px;border-radius:50%;display:grid;place-items:center;
+  background:#fff;color:var(--ink);margin-bottom:28px;box-shadow:0 14px 30px rgba(16,14,13,.26)}
+.seal svg{width:40px;height:auto;display:block}
+.done>p{margin-top:14px;color:var(--dim);font-size:14.5px;line-height:1.6;max-width:40ch}
+.next{margin:28px 0 0;padding:0;list-style:none;border-top:1px solid var(--line-soft)}
+.next li{padding:14px 0;border-bottom:1px solid var(--line-soft);font-size:13.5px;
+  display:flex;gap:14px;line-height:1.5;color:var(--dim)}
+.next li b{font-weight:700;color:#fff;flex:none;width:16px}
 
-/* ---------- responsive ---------- */
-@media (min-width:901px) and (max-height:820px){
-  .aside{padding:34px clamp(22px,3vw,44px)}
-  .aside-body{padding-top:26px}
-  .lede{margin-top:14px;font-size:14.5px}
-  .facts{margin-top:16px}
-  .rail{margin-top:22px}
+/* ---------- більші екрани: та сама сторінка, просто просторіша ---------- */
+@media (min-width:600px){
+  :root{--pad:44px}
+  .app{max-width:600px;padding-top:calc(env(safe-area-inset-top) + 40px);padding-bottom:48px}
+  .top .mark{width:42px}
+  .top .name{font-size:12.5px}
+  .sheet{padding-top:46px}
+  .step h2,.done h2{font-size:40px}
+  .hint{font-size:15px}
+  .fields{margin-top:36px}
+  /* удвох кнопки вміщаються в рядок: головна праворуч */
+  .nav{flex-direction:row;justify-content:flex-start;gap:12px;margin-top:44px}
+  .btn{width:auto;padding:0 38px}
+  .btn-primary{flex:1}
+  .btn-ghost{flex:none}
 }
-/* landscape phones and short windows: the six-step rail no longer fits the
-   panel and would be clipped — the progress bar above the form still tracks it */
-@media (min-width:901px) and (max-height:660px){
-  .rail{display:none}
-  .aside{padding:26px clamp(22px,3vw,44px)}
-  .aside h1{font-size:clamp(28px,3.4vw,40px)}
-  .lede{margin-top:12px;font-size:14px;line-height:1.5}
-  .watermark{width:min(24%,120px)}
-}
-@media (max-width:900px){
-  .shell{grid-template-columns:1fr}
-  /* the panel is context, not the task — keep it compact so the form is reachable */
-  .aside{position:relative;height:auto;padding:22px var(--pad) 26px}
-  .brand .mark{width:46px}
-  .brand .name{font-size:14.5px;max-width:none}
-  .aside-body{padding-top:22px}
-  .aside h1{font-size:clamp(28px,7.4vw,34px)}
-  .aside h1 br{display:none}
-  .lede{margin-top:12px;font-size:14.5px;line-height:1.55;max-width:38ch}
-  .facts{gap:7px;margin-top:16px}
-  .fact{font-size:11.5px;padding:5px 11px}
-  .rail{display:none}
-  .watermark{right:3%;bottom:4%;width:min(23%,84px);opacity:.11}
-  .wrap{padding-top:30px;padding-bottom:48px}
-  .nav{margin-top:36px;padding-bottom:env(safe-area-inset-bottom)}
-}
-/* two pills no longer fit side by side — stack them, primary first */
-@media (max-width:480px){
-  .nav{flex-direction:column-reverse;align-items:stretch;gap:10px}
-  .btn,.btn-primary{flex:none;width:100%;min-height:56px;
-    padding:0 22px;font-size:15px;white-space:nowrap}
+@media (min-width:1000px){
+  .app{max-width:660px}
+  .step h2,.done h2{font-size:46px}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}
@@ -283,321 +236,300 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 </style>
 </head>
 <body>
+<div class="bg" aria-hidden="true"></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><g id="lts-emblem" fill="currentColor" fill-rule="nonzero"><path d="M 106.777344 575.152344 C 155.992188 575.148438 205.207031 575.152344 254.417969 575.105469 C 256.164062 575.105469 257.425781 575.617188 258.597656 576.882812 C 262.390625 580.972656 266.273438 584.972656 270.097656 589.03125 C 272.550781 591.636719 275.011719 594.242188 277.375 596.933594 C 278.472656 598.179688 279.71875 598.539062 281.324219 598.527344 C 291.609375 598.472656 301.890625 598.484375 312.171875 598.519531 C 313.535156 598.523438 314.640625 598.285156 315.652344 597.238281 C 319.125 593.652344 322.722656 590.191406 326.203125 586.613281 C 329.253906 583.472656 332.265625 580.292969 335.171875 577.015625 C 336.496094 575.523438 337.96875 575.101562 339.898438 575.105469 C 364.15625 575.15625 388.414062 575.140625 412.671875 575.140625 C 436.53125 575.140625 460.390625 575.136719 484.246094 575.140625 C 488.074219 575.144531 487.75 574.816406 487.761719 578.726562 C 487.765625 580.621094 487.792969 582.519531 487.753906 584.414062 C 487.714844 586.457031 487.6875 586.492188 485.789062 586.539062 C 477.332031 586.75 468.875 587.09375 460.417969 587.105469 C 421.984375 587.167969 383.550781 587.152344 345.121094 587.09375 C 342.859375 587.089844 341.183594 587.636719 339.625 589.339844 C 335.53125 593.828125 331.238281 598.132812 327.089844 602.570312 C 325.0625 604.742188 323.175781 607.050781 321.222656 609.296875 L 271.507812 609.296875 C 269.980469 607.476562 268.539062 605.574219 266.910156 603.847656 C 262.0625 598.710938 257.09375 593.683594 252.277344 588.515625 C 250.855469 586.996094 249.339844 586.496094 247.296875 586.503906 C 223.863281 586.5625 200.425781 586.65625 176.996094 586.503906 C 153.589844 586.351562 130.175781 587.199219 106.777344 585.933594 Z M 106.777344 575.152344 "/><path d="M 258.9375 406.527344 C 258.9375 443.363281 258.921875 480.199219 258.972656 517.035156 C 258.976562 519.445312 258.425781 521.5 257.070312 523.46875 C 255.945312 525.097656 255.132812 526.941406 254.03125 528.59375 C 252.988281 530.160156 251.722656 531.574219 250.609375 533.097656 C 247.667969 537.128906 244.761719 537.320312 241.734375 533.503906 C 239.640625 530.863281 237.742188 528.070312 235.738281 525.359375 C 233.890625 522.863281 233.160156 520.039062 233.164062 516.972656 C 233.167969 494.910156 233.652344 472.832031 233.019531 450.789062 C 232.402344 429.347656 232.882812 407.914062 232.566406 386.484375 C 232.5625 386.183594 232.574219 385.882812 232.554688 385.585938 C 232.457031 384.148438 232.195312 383.996094 231.007812 384.726562 C 224.265625 388.875 218.171875 393.871094 213.027344 399.835938 C 206.796875 407.0625 201.457031 414.953125 196.734375 423.277344 C 189.125 436.679688 183.535156 450.90625 179 465.566406 C 177.070312 471.808594 175.445312 478.160156 174.070312 484.542969 C 172.90625 489.945312 172.347656 495.476562 171.445312 500.9375 C 170.566406 506.238281 170.128906 511.566406 170.269531 516.941406 C 170.285156 517.4375 170.285156 517.941406 170.242188 518.4375 C 170.15625 519.339844 169.683594 519.988281 168.746094 520 C 165.453125 520.046875 162.160156 520.03125 158.867188 520.023438 C 157.964844 520.019531 157.652344 519.429688 157.703125 518.628906 C 157.839844 516.558594 157.976562 514.484375 158.164062 512.417969 C 158.371094 510.148438 158.605469 507.886719 158.875 505.625 C 159.265625 502.386719 159.554688 499.125 160.136719 495.921875 C 161.21875 489.988281 162.355469 484.058594 163.699219 478.183594 C 166.230469 467.152344 169.125 456.210938 173.082031 445.597656 C 175.582031 438.902344 178.457031 432.34375 181.175781 425.726562 C 184.742188 417.039062 189.457031 408.96875 194.675781 401.195312 C 198.046875 396.167969 201.800781 391.445312 205.894531 386.9375 C 211.515625 380.75 217.949219 375.765625 225.277344 371.875 C 227.023438 370.949219 228.941406 370.347656 230.785156 369.617188 C 232.988281 368.75 233.152344 368.566406 233.15625 366.09375 C 233.171875 357.40625 233.164062 348.722656 233.164062 340.039062 C 233.164062 325.464844 233.167969 310.890625 233.167969 296.3125 C 233.167969 295.816406 233.167969 295.316406 233.167969 294.816406 C 233.148438 291.84375 233.148438 291.828125 230.265625 291.824219 C 220.183594 291.816406 210.101562 291.832031 200.019531 291.816406 C 195.539062 291.808594 196.066406 292.296875 196.027344 287.8125 C 196.019531 286.816406 196 285.816406 196.035156 284.820312 C 196.101562 282.910156 196.117188 282.84375 198.140625 282.84375 C 212.117188 282.824219 226.09375 282.824219 240.070312 282.84375 C 242.070312 282.84375 242.082031 282.910156 242.148438 284.847656 C 242.179688 285.644531 242.15625 286.445312 242.15625 287.242188 L 242.160156 407.632812 C 243.375 425.363281 242.582031 443.117188 242.722656 460.855469 C 242.863281 478.523438 242.71875 496.195312 242.800781 513.863281 C 242.816406 516.71875 243.238281 519.605469 244.492188 522.253906 C 245.238281 523.832031 246.140625 523.9375 247.082031 522.496094 C 247.601562 521.699219 248.039062 520.695312 248.089844 519.761719 C 248.378906 514.703125 248.703125 509.636719 248.707031 504.574219 C 248.753906 445.578125 248.738281 386.578125 248.742188 327.582031 C 249.78125 313.445312 249.183594 299.289062 249.34375 285.140625 C 249.371094 282.886719 249.402344 282.839844 251.730469 282.839844 C 265.507812 282.824219 279.285156 282.824219 293.058594 282.839844 C 295.40625 282.839844 295.425781 282.886719 295.460938 285.125 C 295.488281 286.917969 295.453125 288.71875 295.449219 290.515625 C 295.445312 291.367188 295.019531 291.792969 294.167969 291.800781 C 293.371094 291.808594 292.570312 291.820312 291.773438 291.820312 C 281.992188 291.820312 272.207031 291.820312 262.425781 291.820312 C 261.726562 291.820312 261.027344 291.847656 260.328125 291.832031 C 259.292969 291.808594 258.917969 292.363281 258.933594 293.324219 C 258.949219 294.222656 258.929688 295.121094 258.929688 296.019531 C 258.929688 332.855469 258.929688 369.691406 258.929688 406.527344 Z M 258.9375 406.527344 "/><path d="M 284.097656 468.554688 C 284.097656 480.722656 284.089844 492.894531 284.097656 505.0625 C 284.101562 508.984375 283.761719 508.648438 287.589844 508.648438 C 308.039062 508.652344 328.488281 508.652344 348.933594 508.652344 C 349.632812 508.652344 350.332031 508.632812 351.027344 508.636719 C 351.867188 508.636719 352.332031 508.257812 352.34375 507.390625 C 352.351562 506.792969 352.382812 506.191406 352.359375 505.59375 C 352.195312 501.53125 352.648438 497.46875 351.839844 493.398438 C 351.285156 490.601562 351.5625 487.640625 351.050781 484.832031 C 349.71875 477.511719 347.835938 470.347656 344.554688 463.589844 C 340.773438 455.800781 335.898438 448.933594 328.96875 443.621094 C 325.414062 440.894531 321.742188 438.335938 317.636719 436.527344 C 312.914062 434.453125 308.117188 432.542969 303.007812 431.59375 C 298.25 430.710938 293.539062 429.460938 288.636719 429.585938 C 288.046875 429.601562 287.441406 429.546875 286.859375 429.429688 C 284.121094 428.894531 284.125 428.882812 284.09375 431.75 C 284.089844 432.25 284.09375 432.746094 284.09375 433.246094 C 284.09375 445.015625 284.09375 456.785156 284.097656 468.554688 Z M 270.300781 442.78125 L 270.300781 370.3125 C 270.300781 369.714844 270.292969 369.117188 270.304688 368.515625 C 270.355469 366.132812 270.355469 366.097656 272.878906 366.097656 C 295.335938 366.085938 317.792969 366.089844 340.253906 366.089844 C 340.554688 366.089844 340.851562 366.109375 341.152344 366.09375 C 342.261719 366.027344 342.808594 366.492188 342.796875 367.652344 C 342.765625 370.449219 342.777344 373.242188 342.789062 376.039062 C 342.792969 376.839844 342.523438 377.398438 341.667969 377.523438 C 340.402344 377.714844 339.136719 378.046875 337.867188 378.054688 C 324.691406 378.09375 311.515625 378.035156 298.339844 378.109375 C 294.273438 378.132812 290.210938 378.503906 286.148438 378.675781 C 285.160156 378.71875 284.671875 379.113281 284.695312 380.121094 C 284.710938 380.816406 284.6875 381.515625 284.6875 382.214844 C 284.683594 386.207031 285.089844 390.253906 284.589844 394.179688 C 283.765625 400.65625 284.285156 407.113281 284.113281 413.574219 C 284.011719 417.222656 283.792969 417.003906 287.453125 417.007812 C 288.25 417.007812 289.050781 417.03125 289.847656 417.003906 C 294.230469 416.859375 298.527344 417.523438 302.863281 418.074219 C 308.804688 418.832031 314.5625 420.222656 320.171875 422.199219 C 327.4375 424.757812 334.144531 428.3125 340.203125 433.1875 C 347.765625 439.273438 353.183594 446.796875 356.792969 455.738281 C 358.390625 459.699219 360.386719 463.523438 361.675781 467.582031 C 362.925781 471.519531 363.671875 475.644531 364.335938 479.734375 C 366.359375 492.191406 365.339844 504.765625 365.546875 517.292969 C 365.582031 519.386719 365.488281 519.402344 363.324219 519.449219 C 361.925781 519.480469 360.527344 519.457031 359.132812 519.457031 C 330.683594 519.457031 302.234375 519.457031 273.789062 519.453125 C 269.976562 519.453125 270.296875 519.757812 270.296875 515.847656 C 270.292969 491.492188 270.296875 467.136719 270.296875 442.78125 Z M 270.300781 442.78125 "/><path d="M 398.222656 567.976562 C 376.265625 567.976562 354.308594 568.007812 332.347656 567.933594 C 330.175781 567.925781 328.640625 568.527344 327.117188 570.089844 C 320.566406 576.804688 313.84375 583.351562 307.28125 590.058594 C 305.898438 591.472656 304.488281 592.0625 302.546875 591.964844 C 299.960938 591.835938 297.359375 591.878906 294.765625 591.960938 C 293.191406 592.007812 291.617188 592.226562 290.054688 592.453125 C 288.0625 592.738281 286.492188 592.355469 284.96875 590.789062 C 278.140625 583.785156 271.132812 576.957031 264.285156 569.972656 C 262.839844 568.496094 261.355469 567.9375 259.308594 567.941406 C 216.589844 567.988281 173.871094 567.972656 131.152344 567.96875 C 130.351562 567.96875 129.542969 568.050781 128.761719 567.9375 C 128.238281 567.863281 127.441406 567.605469 127.34375 567.265625 C 127.21875 566.835938 127.546875 566.09375 127.921875 565.738281 C 130.371094 563.410156 132.863281 561.128906 135.402344 558.898438 C 135.800781 558.546875 136.488281 558.460938 137.058594 558.390625 C 137.75 558.308594 138.453125 558.367188 139.152344 558.367188 C 181.074219 558.367188 222.992188 558.386719 264.914062 558.320312 C 267.308594 558.316406 268.980469 559.019531 270.644531 560.734375 C 276.898438 567.179688 283.335938 573.449219 289.636719 579.851562 C 290.910156 581.148438 292.164062 581.933594 294.0625 581.761719 C 296.433594 581.546875 299.070312 582.171875 301.144531 581.335938 C 303.113281 580.539062 304.53125 578.34375 306.15625 576.730469 C 308.925781 573.992188 311.703125 571.265625 314.40625 568.460938 C 317.027344 565.742188 319.59375 562.964844 322.117188 560.152344 C 323.257812 558.878906 324.511719 558.332031 326.273438 558.332031 C 369.59375 558.378906 412.910156 558.375 456.226562 558.339844 C 457.953125 558.335938 459.277344 558.746094 460.421875 560.070312 C 462.4375 562.398438 464.5625 564.632812 466.625 566.921875 C 466.808594 567.128906 466.878906 567.433594 467.003906 567.695312 C 466.734375 567.785156 466.46875 567.945312 466.195312 567.957031 C 465.398438 567.996094 464.597656 567.976562 463.796875 567.976562 C 441.941406 567.980469 420.082031 567.976562 398.222656 567.976562 "/><path d="M 376.421875 366.09375 C 381.714844 366.09375 387.019531 365.832031 392.292969 366.152344 C 401.644531 366.71875 411 366.703125 420.359375 366.65625 C 421.972656 366.644531 422.984375 367.382812 423.914062 368.460938 C 428.136719 373.34375 431.40625 378.742188 432.609375 385.175781 C 432.988281 387.210938 433.050781 389.304688 433.234375 391.371094 C 433.332031 392.441406 432.925781 393.066406 431.726562 393.058594 C 428.132812 393.035156 424.539062 393.089844 420.945312 393.03125 C 419.546875 393.007812 419.3125 392.507812 418.851562 390.648438 C 418.136719 387.777344 417.292969 384.933594 416.476562 382.085938 C 416.34375 381.621094 416.097656 381.179688 415.84375 380.757812 C 413.867188 377.480469 413.863281 377.484375 409.992188 377.484375 C 396.917969 377.484375 383.839844 377.484375 370.761719 377.484375 C 370.066406 377.484375 369.367188 377.460938 368.667969 377.488281 C 366.785156 377.566406 366.789062 377.574219 367.171875 379.601562 C 367.246094 379.988281 367.316406 380.382812 367.339844 380.777344 C 367.550781 384.839844 367.664062 388.914062 367.980469 392.96875 C 368.203125 395.816406 368.710938 398.644531 369.0625 401.488281 C 369.507812 405.117188 369.875 408.761719 370.363281 412.386719 C 370.746094 415.226562 371.128906 418.078125 371.738281 420.875 C 373.402344 428.511719 374.992188 436.171875 376.980469 443.722656 C 378.414062 449.183594 380.4375 454.484375 382.199219 459.855469 C 383.945312 465.1875 386.605469 470.105469 389.207031 475.03125 C 393.175781 482.550781 398.023438 489.46875 404.457031 495.117188 C 410.695312 500.59375 417.828125 504.355469 426.113281 505.664062 C 428.0625 505.972656 430.042969 506.105469 432.015625 506.253906 C 434 506.40625 434.386719 506.648438 434.429688 508.472656 C 434.492188 511.363281 434.410156 514.261719 434.460938 517.15625 C 434.484375 518.484375 433.871094 518.855469 432.644531 518.871094 C 426.625 518.949219 420.8125 517.9375 415.167969 515.828125 C 411.53125 514.464844 407.929688 513.003906 404.699219 510.839844 C 401.574219 508.746094 398.402344 506.648438 395.597656 504.164062 C 391.957031 500.9375 388.738281 497.277344 385.699219 493.429688 C 380.667969 487.058594 376.632812 480.113281 373.152344 472.847656 C 369.289062 464.78125 366.097656 456.445312 363.5 447.855469 C 360.742188 438.734375 358.609375 429.480469 356.742188 420.164062 C 355.808594 415.519531 355.410156 410.769531 354.757812 406.070312 C 354.40625 403.53125 354.023438 400.992188 353.664062 398.453125 C 353.605469 398.058594 353.605469 397.65625 353.570312 397.257812 C 352.984375 390.613281 352.878906 383.949219 352.957031 377.28125 C 352.996094 374.285156 352.941406 371.292969 352.972656 368.296875 C 353 366.160156 353.035156 366.109375 355.160156 366.101562 C 362.25 366.074219 369.335938 366.089844 376.421875 366.089844 Z M 376.421875 366.09375 "/><path d="M 387.898438 552.402344 C 366.734375 552.402344 345.570312 552.429688 324.40625 552.363281 C 322.351562 552.355469 320.871094 552.9375 319.4375 554.417969 C 314.574219 559.4375 309.550781 564.296875 304.667969 569.296875 C 303.449219 570.546875 302.179688 571.070312 300.457031 571.003906 C 297.664062 570.894531 294.863281 570.890625 292.074219 571.003906 C 290.433594 571.074219 289.273438 570.527344 288.132812 569.367188 C 283.175781 564.300781 278.082031 559.367188 273.15625 554.273438 C 271.777344 552.851562 270.351562 552.367188 268.421875 552.371094 C 227.695312 552.410156 186.964844 552.394531 146.234375 552.390625 C 145.335938 552.390625 144.433594 552.441406 143.542969 552.355469 C 143.105469 552.308594 142.476562 552.097656 142.332031 551.78125 C 142.179688 551.445312 142.367188 550.792969 142.632812 550.457031 C 143.804688 548.980469 145.011719 547.523438 146.289062 546.140625 C 149.382812 542.789062 149.402344 542.804688 153.984375 542.804688 C 193.515625 542.800781 233.046875 542.816406 272.578125 542.742188 C 274.960938 542.738281 276.679688 543.335938 278.34375 545.074219 C 282.894531 549.835938 287.617188 554.4375 292.285156 559.085938 C 294.722656 561.511719 298.578125 561.539062 300.988281 559.136719 C 305.871094 554.28125 310.765625 549.433594 315.582031 544.507812 C 316.792969 543.269531 318.046875 542.769531 319.777344 542.769531 C 360.90625 542.808594 402.035156 542.808594 443.164062 542.773438 C 444.769531 542.773438 446.03125 543.097656 447.117188 544.363281 C 449.195312 546.769531 451.394531 549.074219 453.519531 551.441406 C 453.675781 551.617188 453.703125 551.9375 453.710938 552.195312 C 453.710938 552.253906 453.371094 552.367188 453.183594 552.371094 C 452.285156 552.398438 451.386719 552.402344 450.488281 552.402344 C 429.625 552.402344 408.761719 552.402344 387.898438 552.402344 "/><path d="M 218.976562 277.441406 C 212.101562 277.441406 205.222656 277.457031 198.34375 277.433594 C 196.085938 277.425781 196.074219 277.382812 196.035156 275.0625 C 196.007812 273.667969 196.011719 272.273438 196.03125 270.878906 C 196.074219 268.496094 196.082031 268.496094 198.601562 268.457031 C 199.097656 268.449219 199.597656 268.457031 200.09375 268.457031 L 229.699219 268.457031 C 230.199219 268.457031 230.695312 268.460938 231.195312 268.453125 C 233.734375 268.414062 233.734375 268.414062 233.765625 265.734375 C 233.773438 265.238281 233.765625 264.738281 233.765625 264.242188 C 233.765625 255.070312 233.765625 245.902344 233.769531 236.730469 C 233.773438 235.933594 233.652344 235.085938 233.875 234.351562 C 234.484375 232.375 236.183594 232.484375 237.804688 232.511719 C 239.484375 232.539062 241.328125 232.199219 242.050781 234.339844 C 242.234375 234.882812 242.152344 235.523438 242.152344 236.121094 C 242.15625 249.078125 242.15625 262.035156 242.15625 274.992188 C 242.15625 275.390625 242.140625 275.792969 242.132812 276.191406 C 242.117188 277.058594 241.640625 277.429688 240.808594 277.425781 C 240.109375 277.425781 239.410156 277.441406 238.714844 277.441406 C 232.136719 277.445312 225.554688 277.441406 218.976562 277.441406 "/><path d="M 272.195312 277.445312 C 265.417969 277.445312 258.640625 277.457031 251.859375 277.4375 C 249.390625 277.429688 249.351562 277.398438 249.347656 274.96875 C 249.332031 262.011719 249.332031 249.054688 249.347656 236.097656 C 249.351562 233.1875 249.988281 232.601562 252.816406 232.507812 C 256.761719 232.378906 257.832031 232.5625 257.765625 237.351562 C 257.636719 246.519531 257.730469 255.691406 257.730469 264.863281 C 257.730469 265.5625 257.75 266.257812 257.734375 266.957031 C 257.71875 267.914062 258.097656 268.46875 259.132812 268.445312 C 259.828125 268.429688 260.527344 268.453125 261.222656 268.453125 C 271.390625 268.457031 281.558594 268.453125 291.726562 268.457031 C 292.421875 268.457031 293.121094 268.484375 293.816406 268.453125 C 294.917969 268.40625 295.488281 268.835938 295.46875 270.007812 C 295.4375 271.898438 295.421875 273.792969 295.480469 275.6875 C 295.515625 276.960938 295.007812 277.480469 293.722656 277.457031 C 291.132812 277.40625 288.542969 277.441406 285.949219 277.445312 C 281.363281 277.445312 276.78125 277.445312 272.195312 277.445312 "/></g></defs></svg>
-<div class="shell">
+<div class="app">
 
-  <!-- ============ metallic panel ============ -->
-  <aside class="aside">
-    <div class="watermark"><svg viewBox="106 232 383 378" aria-hidden="true" focusable="false"><use href="#lts-emblem"/></svg></div>
+  <header class="top">
+    <div class="mark"><svg viewBox="106 232 383 378" aria-hidden="true" focusable="false"><use href="#lts-emblem"/></svg></div>
+    <div class="name">Львівська Богословська Семінарія</div>
+  </header>
 
-    <div class="brand">
-      <div class="mark"><svg viewBox="106 232 383 378" aria-hidden="true" focusable="false"><use href="#lts-emblem"/></svg></div>
-      <div class="name">Львівська Богословська Семінарія</div>
-    </div>
+  <div class="sheet">
+    <ol class="dots" id="dots" aria-hidden="true">
+      <li data-state="now"></li><li></li><li></li><li></li><li></li><li></li>
+    </ol>
 
-    <div class="aside-body">
-      <h1>Вступна <br>анкета</h1>
-      <p class="lede">Розкажіть про себе, щоб приймальна комісія познайомилася з вами ще до співбесіди. Усі відповіді бачить лише комісія.</p>
-      <div class="facts">
-        <span class="fact">5–7 хвилин</span>
-        <span class="fact">6 розділів</span>
-        <span class="fact">Відповідь за 2 робочі дні</span>
+    <form id="form" novalidate autocomplete="on">
+
+      <!-- honeypot -->
+      <div class="hp" aria-hidden="true">
+        <label for="website">Не заповнюйте це поле</label>
+        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
       </div>
 
-      <ol class="rail" id="rail">
-        <li data-state="now">Особисті дані</li>
-        <li>Освіта</li>
-        <li>Навчання у нас</li>
-        <li>Мотивація</li>
-        <li>Рекомендації</li>
-        <li>Організаційне</li>
+      <!-- ---------- 1 ---------- -->
+      <section class="step is-active" data-step="1">
+        <p class="count">Розділ 1 з 6</p>
+        <h2 tabindex="-1">Особисті<br>дані</h2>
+        <p class="hint">Щоб ми знали, з ким говоримо і як з вами зв’язатися. Заповнення анкети займе 5–7 хвилин.</p>
+
+        <div class="fields">
+          <div class="f">
+            <input type="text" id="full_name" name="full_name" placeholder=" " required autocomplete="name">
+            <label for="full_name">ПІБ повністю <span class="req">*</span></label>
+          </div>
+          <div class="f">
+            <input type="date" id="birth_date" name="birth_date" placeholder=" " min="1930-01-01" max="2012-12-31">
+            <label for="birth_date">Дата народження</label>
+          </div>
+          <div class="f">
+            <input type="tel" id="phone" name="phone" placeholder=" " required
+                   pattern="[0-9\s+()\-]{9,20}" inputmode="tel" autocomplete="tel">
+            <label for="phone">Контактний телефон <span class="req">*</span></label>
+            <p class="note">Наприклад: +380 67 123 45 67</p>
+          </div>
+          <div class="f">
+            <input type="email" id="email" name="email" placeholder=" " required autocomplete="email" inputmode="email">
+            <label for="email">Email <span class="req">*</span></label>
+          </div>
+          <div class="f">
+            <input type="text" id="city" name="city" placeholder=" " autocomplete="address-level2">
+            <label for="city">Місто або область проживання</label>
+          </div>
+
+          <div class="file">
+            <input type="file" id="photo_file" accept="image/*">
+            <label class="drop" for="photo_file">
+              <span class="ico" id="photo_ico">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5h3.2l1.4-2h8.8l1.4 2H21v11H3z"/><circle cx="12" cy="14" r="3.4"/></svg>
+              </span>
+              <span>
+                <span class="lbl" id="photo_lbl">Додати фото</span><br>
+                <span class="sub" id="photo_sub">За бажанням. JPG або PNG, до 8 МБ</span>
+              </span>
+            </label>
+            <input type="hidden" name="photo" id="photo">
+          </div>
+        </div>
+
+        <div class="err" id="err1"></div>
+        <div class="nav">
+          <button type="button" class="btn btn-primary" data-go="next">Далі</button>
+        </div>
+      </section>
+
+      <!-- ---------- 2 ---------- -->
+      <section class="step" data-step="2">
+        <p class="count">Розділ 2 з 6</p>
+        <h2 tabindex="-1">Освіта</h2>
+        <p class="hint">Коротко про те, де ви вчилися. Якщо чогось не пам’ятаєте точно — пропустіть поле.</p>
+
+        <div class="fields">
+          <div class="f">
+            <input type="text" id="school" name="school" placeholder=" ">
+            <label for="school">Останній заклад освіти</label>
+          </div>
+          <div class="f">
+            <input type="text" id="graduation_year" name="graduation_year" placeholder=" ">
+            <label for="graduation_year">Рік закінчення або поточний курс</label>
+          </div>
+          <div class="f">
+            <input type="text" id="specialty" name="specialty" placeholder=" ">
+            <label for="specialty">Спеціальність</label>
+          </div>
+          <div class="f">
+            <input type="text" id="gpa" name="gpa" placeholder=" " inputmode="decimal">
+            <label for="gpa">Середній бал атестата або диплома</label>
+          </div>
+        </div>
+
+        <div class="err" id="err2"></div>
+        <div class="nav">
+          <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
+          <button type="button" class="btn btn-primary" data-go="next">Далі</button>
+        </div>
+      </section>
+
+      <!-- ---------- 3 ---------- -->
+      <section class="step" data-step="3">
+        <p class="count">Розділ 3 з 6</p>
+        <h2 tabindex="-1">Навчання<br>у нас</h2>
+        <p class="hint">Що саме вас цікавить. Якщо вагаєтеся між програмами — оберіть найближчу, на співбесіді уточнимо.</p>
+
+        <div class="fields">
+          <div class="f sel">
+            <select id="program" name="program" required>
+              <option value="" selected disabled hidden></option>
+              <option>Бакалавр богослов’я (очна)</option>
+              <option>Бакалавр практичного служіння (заочна)</option>
+              <option>Магістр богослов’я (заочна)</option>
+              <option>Вчитель недільної школи (сертифікована програма)</option>
+            </select>
+            <label for="program">Програма <span class="req">*</span></label>
+          </div>
+
+          <fieldset class="group" data-required="study_form">
+            <legend class="q">Форма навчання <span class="req">*</span></legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="study_form" value="Очна"><span>Очна</span></label>
+              <label class="opt"><input type="radio" name="study_form" value="Заочна"><span>Заочна</span></label>
+              <label class="opt"><input type="radio" name="study_form" value="Дистанційна"><span>Дистанційна</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend class="q">Рівень</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="level" value="Бакалавр"><span>Бакалавр</span></label>
+              <label class="opt"><input type="radio" name="level" value="Магістр"><span>Магістр</span></label>
+              <label class="opt"><input type="radio" name="level" value="Сертифікатна програма"><span>Сертифікатна програма</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend class="q">Звідки дізналися про семінарію</legend>
+            <div class="opts">
+              <label class="opt"><input type="checkbox" name="source" value="Соцмережі"><span>Соцмережі</span></label>
+              <label class="opt"><input type="checkbox" name="source" value="Друзі або знайомі"><span>Друзі або знайомі</span></label>
+              <label class="opt"><input type="checkbox" name="source" value="Церква або громада"><span>Церква або громада</span></label>
+              <label class="opt"><input type="checkbox" name="source" value="Сайт"><span>Сайт</span></label>
+              <label class="opt"><input type="checkbox" name="source" value="Реклама"><span>Реклама</span></label>
+              <label class="opt"><input type="checkbox" name="source" value="Інше"><span>Інше</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend class="q">Чи подавали документи раніше</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="applied_before" value="Так"><span>Так</span></label>
+              <label class="opt"><input type="radio" name="applied_before" value="Ні"><span>Ні</span></label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="err" id="err3"></div>
+        <div class="nav">
+          <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
+          <button type="button" class="btn btn-primary" data-go="next">Далі</button>
+        </div>
+      </section>
+
+      <!-- ---------- 4 ---------- -->
+      <section class="step" data-step="4">
+        <p class="count">Розділ 4 з 6</p>
+        <h2 tabindex="-1">Мотивація</h2>
+        <p class="hint">Ці три відповіді комісія читає перед співбесідою. Пишіть своїми словами — правильних формулювань тут немає.</p>
+
+        <div class="fields">
+          <div class="f">
+            <textarea id="motivation" name="motivation" placeholder=" " rows="4"></textarea>
+            <label for="motivation">Чому ви хочете навчатися саме тут</label>
+          </div>
+          <div class="f">
+            <textarea id="application" name="application" placeholder=" " rows="4"></textarea>
+            <label for="application">Як бачите застосування цієї освіти у житті та служінні</label>
+          </div>
+          <div class="f">
+            <textarea id="ministry_experience" name="ministry_experience" placeholder=" " rows="4"></textarea>
+            <label for="ministry_experience">Досвід церковного служіння або волонтерства</label>
+          </div>
+        </div>
+
+        <div class="err" id="err4"></div>
+        <div class="nav">
+          <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
+          <button type="button" class="btn btn-primary" data-go="next">Далі</button>
+        </div>
+      </section>
+
+      <!-- ---------- 5 ---------- -->
+      <section class="step" data-step="5">
+        <p class="count">Розділ 5 з 6</p>
+        <h2 tabindex="-1">Рекомендації</h2>
+        <p class="hint">Для богословських програм ми зазвичай спілкуємося з вашим пастором чи наставником. Якщо ще не маєте кого вказати — залиште порожнім.</p>
+
+        <div class="fields">
+          <div class="f">
+            <input type="text" id="pastor_name" name="pastor_name" placeholder=" ">
+            <label for="pastor_name">ПІБ пастора або наставника</label>
+          </div>
+          <div class="f">
+            <input type="text" id="pastor_contact" name="pastor_contact" placeholder=" ">
+            <label for="pastor_contact">Телефон або email наставника</label>
+          </div>
+          <div class="f">
+            <input type="text" id="church" name="church" placeholder=" ">
+            <label for="church">Назва церкви або громади</label>
+          </div>
+        </div>
+
+        <div class="err" id="err5"></div>
+        <div class="nav">
+          <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
+          <button type="button" class="btn btn-primary" data-go="next">Далі</button>
+        </div>
+      </section>
+
+      <!-- ---------- 6 ---------- -->
+      <section class="step" data-step="6">
+        <p class="count">Розділ 6 з 6</p>
+        <h2 tabindex="-1">Організаційне</h2>
+        <p class="hint">Останні питання — і анкету можна надсилати.</p>
+
+        <div class="fields">
+          <fieldset class="group">
+            <legend class="q">Чи потребуєте гуртожиток</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="dormitory" value="Так"><span>Так</span></label>
+              <label class="opt"><input type="radio" name="dormitory" value="Ні"><span>Ні</span></label>
+              <label class="opt"><input type="radio" name="dormitory" value="Ще не вирішив"><span>Ще не вирішив</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="group">
+            <legend class="q">Чи потрібна фінансова допомога або стипендія</legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="financial_aid" value="Так"><span>Так</span></label>
+              <label class="opt"><input type="radio" name="financial_aid" value="Ні"><span>Ні</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="group" data-required="contact_method">
+            <legend class="q">Зручний спосіб зв’язку <span class="req">*</span></legend>
+            <div class="opts">
+              <label class="opt"><input type="radio" name="contact_method" value="Телефон"><span>Телефон</span></label>
+              <label class="opt"><input type="radio" name="contact_method" value="Email"><span>Email</span></label>
+              <label class="opt"><input type="radio" name="contact_method" value="Telegram"><span>Telegram</span></label>
+              <label class="opt"><input type="radio" name="contact_method" value="Viber"><span>Viber</span></label>
+            </div>
+          </fieldset>
+
+          <div class="group">
+            <label class="check">
+              <input type="checkbox" name="consent" value="Так" id="consent" required>
+              <span class="box"></span>
+              <span class="txt">Даю згоду на обробку персональних даних для вступу до семінарії <span class="req">*</span></span>
+            </label>
+          </div>
+        </div>
+
+        <div class="err" id="err6"></div>
+        <div class="nav">
+          <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
+          <button type="submit" class="btn btn-primary" id="submit">Надіслати анкету</button>
+        </div>
+      </section>
+    </form>
+
+    <!-- ---------- екран подяки ---------- -->
+    <div class="done" id="done" tabindex="-1">
+      <div class="seal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.6 9.4 18 20 6.6"/></svg>
+      </div>
+      <h2 tabindex="-1">Анкету<br>надіслано</h2>
+      <p>Дякуємо. Ваші відповіді вже у приймальній комісії семінарії.</p>
+      <ol class="next">
+        <li><b>1</b><span>Комісія читає анкету — зазвичай у день надходження.</span></li>
+        <li><b>2</b><span>Ми зв’язуємося з вами протягом двох робочих днів обраним способом.</span></li>
+        <li><b>3</b><span>Домовляємося про співбесіду та перелік документів для вступу.</span></li>
       </ol>
     </div>
-  </aside>
+  </div>
 
-  <!-- ============ form ============ -->
-  <main class="main">
-    <div class="progress" aria-hidden="true"><i id="bar"></i></div>
-
-    <div class="wrap">
-      <form id="form" novalidate autocomplete="on">
-
-        <!-- honeypot -->
-        <div class="hp" aria-hidden="true">
-          <label for="website">Не заповнюйте це поле</label>
-          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
-        </div>
-
-        <!-- ---------- 1 ---------- -->
-        <section class="step is-active" data-step="1">
-          <p class="step-count">Розділ 1 з 6</p>
-          <h2 tabindex="-1">Особисті дані</h2>
-          <p class="hint">Щоб ми знали, з ким говоримо і як з вами зв’язатися.</p>
-
-          <div class="fields">
-            <div class="f">
-              <input type="text" id="full_name" name="full_name" placeholder=" " required autocomplete="name">
-              <label for="full_name">ПІБ повністю <span class="req">*</span></label>
-            </div>
-            <div class="f">
-              <input type="date" id="birth_date" name="birth_date" placeholder=" " min="1930-01-01" max="2012-12-31">
-              <label for="birth_date">Дата народження</label>
-            </div>
-            <div class="f">
-              <input type="tel" id="phone" name="phone" placeholder=" " required
-                     pattern="[0-9\s+()\-]{9,20}" inputmode="tel" autocomplete="tel">
-              <label for="phone">Контактний телефон <span class="req">*</span></label>
-              <p class="aside-note">Наприклад: +380 67 123 45 67</p>
-            </div>
-            <div class="f">
-              <input type="email" id="email" name="email" placeholder=" " required autocomplete="email" inputmode="email">
-              <label for="email">Email <span class="req">*</span></label>
-            </div>
-            <div class="f">
-              <input type="text" id="city" name="city" placeholder=" " autocomplete="address-level2">
-              <label for="city">Місто або область проживання</label>
-            </div>
-
-            <div class="file">
-              <input type="file" id="photo_file" accept="image/*">
-              <label class="drop" for="photo_file">
-                <span class="ico" id="photo_ico">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5h3.2l1.4-2h8.8l1.4 2H21v11H3z"/><circle cx="12" cy="14" r="3.4"/></svg>
-                </span>
-                <span>
-                  <span class="lbl" id="photo_lbl">Додати фото</span><br>
-                  <span class="sub" id="photo_sub">За бажанням. JPG або PNG, до 8 МБ</span>
-                </span>
-              </label>
-              <input type="hidden" name="photo" id="photo">
-            </div>
-          </div>
-
-          <div class="err" id="err1"></div>
-          <div class="nav">
-            <button type="button" class="btn btn-primary" data-go="next">Далі</button>
-          </div>
-        </section>
-
-        <!-- ---------- 2 ---------- -->
-        <section class="step" data-step="2">
-          <p class="step-count">Розділ 2 з 6</p>
-          <h2 tabindex="-1">Освіта</h2>
-          <p class="hint">Коротко про те, де ви вчилися. Якщо чогось не пам’ятаєте точно — пропустіть поле.</p>
-
-          <div class="fields">
-            <div class="f">
-              <input type="text" id="school" name="school" placeholder=" ">
-              <label for="school">Останній заклад освіти</label>
-            </div>
-            <div class="f">
-              <input type="text" id="graduation_year" name="graduation_year" placeholder=" ">
-              <label for="graduation_year">Рік закінчення або поточний курс</label>
-            </div>
-            <div class="f">
-              <input type="text" id="specialty" name="specialty" placeholder=" ">
-              <label for="specialty">Спеціальність</label>
-            </div>
-            <div class="f">
-              <input type="text" id="gpa" name="gpa" placeholder=" " inputmode="decimal">
-              <label for="gpa">Середній бал атестата або диплома</label>
-            </div>
-          </div>
-
-          <div class="err" id="err2"></div>
-          <div class="nav">
-            <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
-            <button type="button" class="btn btn-primary" data-go="next">Далі</button>
-          </div>
-        </section>
-
-        <!-- ---------- 3 ---------- -->
-        <section class="step" data-step="3">
-          <p class="step-count">Розділ 3 з 6</p>
-          <h2 tabindex="-1">Навчання у нас</h2>
-          <p class="hint">Що саме вас цікавить. Якщо вагаєтеся між програмами — оберіть найближчу, на співбесіді уточнимо.</p>
-
-          <div class="fields">
-            <div class="f sel">
-              <select id="program" name="program" required>
-                <option value="" selected disabled hidden></option>
-                <option>Бакалавр богослов’я (очна)</option>
-                <option>Бакалавр практичного служіння (заочна)</option>
-                <option>Магістр богослов’я (заочна)</option>
-                <option>Вчитель недільної школи (сертифікована програма)</option>
-              </select>
-              <label for="program">Програма <span class="req">*</span></label>
-            </div>
-
-            <fieldset class="group" data-required="study_form">
-              <legend class="q">Форма навчання <span class="req">*</span></legend>
-              <div class="opts">
-                <label class="opt"><input type="radio" name="study_form" value="Очна"><span>Очна</span></label>
-                <label class="opt"><input type="radio" name="study_form" value="Заочна"><span>Заочна</span></label>
-                <label class="opt"><input type="radio" name="study_form" value="Дистанційна"><span>Дистанційна</span></label>
-              </div>
-            </fieldset>
-
-            <fieldset class="group">
-              <legend class="q">Рівень</legend>
-              <div class="opts">
-                <label class="opt"><input type="radio" name="level" value="Бакалавр"><span>Бакалавр</span></label>
-                <label class="opt"><input type="radio" name="level" value="Магістр"><span>Магістр</span></label>
-                <label class="opt"><input type="radio" name="level" value="Сертифікатна програма"><span>Сертифікатна програма</span></label>
-              </div>
-            </fieldset>
-
-            <fieldset class="group">
-              <legend class="q">Звідки дізналися про семінарію</legend>
-              <div class="opts">
-                <label class="opt"><input type="checkbox" name="source" value="Соцмережі"><span>Соцмережі</span></label>
-                <label class="opt"><input type="checkbox" name="source" value="Друзі або знайомі"><span>Друзі або знайомі</span></label>
-                <label class="opt"><input type="checkbox" name="source" value="Церква або громада"><span>Церква або громада</span></label>
-                <label class="opt"><input type="checkbox" name="source" value="Сайт"><span>Сайт</span></label>
-                <label class="opt"><input type="checkbox" name="source" value="Реклама"><span>Реклама</span></label>
-                <label class="opt"><input type="checkbox" name="source" value="Інше"><span>Інше</span></label>
-              </div>
-            </fieldset>
-
-            <fieldset class="group">
-              <legend class="q">Чи подавали документи раніше</legend>
-              <div class="opts">
-                <label class="opt"><input type="radio" name="applied_before" value="Так"><span>Так</span></label>
-                <label class="opt"><input type="radio" name="applied_before" value="Ні"><span>Ні</span></label>
-              </div>
-            </fieldset>
-          </div>
-
-          <div class="err" id="err3"></div>
-          <div class="nav">
-            <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
-            <button type="button" class="btn btn-primary" data-go="next">Далі</button>
-          </div>
-        </section>
-
-        <!-- ---------- 4 ---------- -->
-        <section class="step" data-step="4">
-          <p class="step-count">Розділ 4 з 6</p>
-          <h2 tabindex="-1">Мотивація</h2>
-          <p class="hint">Ці три відповіді комісія читає перед співбесідою. Пишіть своїми словами — правильних формулювань тут немає.</p>
-
-          <div class="fields">
-            <div class="f">
-              <textarea id="motivation" name="motivation" placeholder=" " rows="4"></textarea>
-              <label for="motivation">Чому ви хочете навчатися саме тут</label>
-            </div>
-            <div class="f">
-              <textarea id="application" name="application" placeholder=" " rows="4"></textarea>
-              <label for="application">Як бачите застосування цієї освіти у житті та служінні</label>
-            </div>
-            <div class="f">
-              <textarea id="ministry_experience" name="ministry_experience" placeholder=" " rows="4"></textarea>
-              <label for="ministry_experience">Досвід церковного служіння або волонтерства</label>
-            </div>
-          </div>
-
-          <div class="err" id="err4"></div>
-          <div class="nav">
-            <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
-            <button type="button" class="btn btn-primary" data-go="next">Далі</button>
-          </div>
-        </section>
-
-        <!-- ---------- 5 ---------- -->
-        <section class="step" data-step="5">
-          <p class="step-count">Розділ 5 з 6</p>
-          <h2 tabindex="-1">Рекомендації</h2>
-          <p class="hint">Для богословських програм ми зазвичай спілкуємося з вашим пастором чи наставником. Якщо ще не маєте кого вказати — залиште порожнім.</p>
-
-          <div class="fields">
-            <div class="f">
-              <input type="text" id="pastor_name" name="pastor_name" placeholder=" ">
-              <label for="pastor_name">ПІБ пастора або наставника</label>
-            </div>
-            <div class="f">
-              <input type="text" id="pastor_contact" name="pastor_contact" placeholder=" ">
-              <label for="pastor_contact">Телефон або email наставника</label>
-            </div>
-            <div class="f">
-              <input type="text" id="church" name="church" placeholder=" ">
-              <label for="church">Назва церкви або громади</label>
-            </div>
-          </div>
-
-          <div class="err" id="err5"></div>
-          <div class="nav">
-            <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
-            <button type="button" class="btn btn-primary" data-go="next">Далі</button>
-          </div>
-        </section>
-
-        <!-- ---------- 6 ---------- -->
-        <section class="step" data-step="6">
-          <p class="step-count">Розділ 6 з 6</p>
-          <h2 tabindex="-1">Організаційне</h2>
-          <p class="hint">Останні питання — і анкету можна надсилати.</p>
-
-          <div class="fields">
-            <fieldset class="group">
-              <legend class="q">Чи потребуєте гуртожиток</legend>
-              <div class="opts">
-                <label class="opt"><input type="radio" name="dormitory" value="Так"><span>Так</span></label>
-                <label class="opt"><input type="radio" name="dormitory" value="Ні"><span>Ні</span></label>
-                <label class="opt"><input type="radio" name="dormitory" value="Ще не вирішив"><span>Ще не вирішив</span></label>
-              </div>
-            </fieldset>
-
-            <fieldset class="group">
-              <legend class="q">Чи потрібна фінансова допомога або стипендія</legend>
-              <div class="opts">
-                <label class="opt"><input type="radio" name="financial_aid" value="Так"><span>Так</span></label>
-                <label class="opt"><input type="radio" name="financial_aid" value="Ні"><span>Ні</span></label>
-              </div>
-            </fieldset>
-
-            <fieldset class="group" data-required="contact_method">
-              <legend class="q">Зручний спосіб зв’язку <span class="req">*</span></legend>
-              <div class="opts">
-                <label class="opt"><input type="radio" name="contact_method" value="Телефон"><span>Телефон</span></label>
-                <label class="opt"><input type="radio" name="contact_method" value="Email"><span>Email</span></label>
-                <label class="opt"><input type="radio" name="contact_method" value="Telegram"><span>Telegram</span></label>
-                <label class="opt"><input type="radio" name="contact_method" value="Viber"><span>Viber</span></label>
-              </div>
-            </fieldset>
-
-            <div class="group">
-              <label class="check">
-                <input type="checkbox" name="consent" value="Так" id="consent" required>
-                <span class="box"></span>
-                <span class="txt">Даю згоду на обробку персональних даних для вступу до семінарії <span class="req">*</span></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="err" id="err6"></div>
-          <div class="nav">
-            <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
-            <button type="submit" class="btn btn-primary" id="submit">Надіслати анкету</button>
-          </div>
-        </section>
-      </form>
-
-      <!-- ---------- success ---------- -->
-      <div class="done" id="done" tabindex="-1">
-        <div class="seal">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.6 9.4 18 20 6.6"/></svg>
-        </div>
-        <h2 tabindex="-1">Анкету надіслано</h2>
-        <p>Дякуємо. Ваші відповіді вже у приймальній комісії семінарії.</p>
-        <ol class="next">
-          <li><b>1</b><span>Комісія читає анкету — зазвичай у день надходження.</span></li>
-          <li><b>2</b><span>Ми зв’язуємося з вами протягом двох робочих днів обраним способом.</span></li>
-          <li><b>3</b><span>Домовляємося про співбесіду та перелік документів для вступу.</span></li>
-        </ol>
-      </div>
-
-    </div>
-  </main>
+  <footer class="foot" id="foot">
+    Обовʼязкові поля позначені зірочкою. Усі відповіді бачить лише приймальна комісія.
+  </footer>
 </div>
 <script>
 (function () {
@@ -612,8 +544,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 
   const form   = document.getElementById('form');
   const steps  = Array.from(form.querySelectorAll('.step'));
-  const rail   = Array.from(document.querySelectorAll('#rail li'));
-  const bar    = document.getElementById('bar');
+  const dots   = Array.from(document.querySelectorAll('#dots li'));
   const done   = document.getElementById('done');
   const submit = document.getElementById('submit');
   const TOTAL  = steps.length;
@@ -623,11 +554,10 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 
   function paint() {
     steps.forEach((s, i) => s.classList.toggle('is-active', i === current));
-    rail.forEach((li, i) => {
-      li.dataset.state = i < current ? 'done' : (i === current ? 'now' : '');
-      if (i > current) li.removeAttribute('data-state');
+    dots.forEach((li, i) => {
+      if (i <= current) li.dataset.state = i < current ? 'done' : 'now';
+      else li.removeAttribute('data-state');
     });
-    bar.style.width = ((current + 1) / TOTAL * 100) + '%';
   }
 
   function go(dir) {
@@ -636,8 +566,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
     if (next < 0 || next >= TOTAL) return;
     current = next;
     paint();
-    const y = document.querySelector('.wrap').getBoundingClientRect().top + window.scrollY - 24;
-    window.scrollTo({ top: Math.max(0, y), behavior: prefersStill() ? 'auto' : 'smooth' });
+    window.scrollTo({ top: 0, behavior: prefersStill() ? 'auto' : 'smooth' });
     const heading = steps[current].querySelector('h2');
     if (heading) heading.focus({ preventScroll: true });
   }
@@ -803,8 +732,9 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
       form.style.display = 'none';
       done.classList.add('on');
       done.focus();
-      bar.style.width = '100%';
-      rail.forEach(li => li.dataset.state = 'done');
+      dots.forEach(li => li.dataset.state = 'done');
+      document.getElementById('foot').textContent =
+        'Відповідь надійде протягом двох робочих днів.';
       window.scrollTo({ top: 0, behavior: prefersStill() ? 'auto' : 'smooth' });
     };
 
