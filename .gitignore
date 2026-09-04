@@ -1,0 +1,29 @@
+# IDE
+.idea/
+.vscode/
+
+# Python virtual environment
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Google Apps Script / clasp
+.clasp.json
+.clasprc.json
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and temp
+*.log
+*.tmp
+*.bak
+
+logos/
+Анкета зразок.jpg
+PROMT.md
