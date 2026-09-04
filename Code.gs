@@ -38,7 +38,8 @@ var FIELDS = [
   { key: 'dormitory',           header: 'Потребує гуртожиток' },
   { key: 'financial_aid',       header: 'Потрібна фінансова допомога' },
   { key: 'contact_method',      header: 'Спосіб зв’язку' },
-  { key: 'consent',             header: 'Згода на обробку даних' }
+  { key: 'consent',             header: 'Згода на обробку даних' },
+  { key: 'gpa_scale',           header: 'Шкала оцінювання' }
 ];
 
 /** Папка Google Drive для фото. Створюється автоматично. */
@@ -84,13 +85,20 @@ function getSheet() {
   var sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) sheet = ss.insertSheet(SHEET_NAME);
 
+  var headers = ['Час надходження'];
+  for (var i = 0; i < FIELDS.length; i++) headers.push(FIELDS[i].header);
+
   if (sheet.getLastRow() === 0) {
-    var headers = ['Час надходження'];
-    for (var i = 0; i < FIELDS.length; i++) headers.push(FIELDS[i].header);
     sheet.appendRow(headers);
-    sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
     sheet.setFrozenRows(1);
+  } else if (sheet.getLastColumn() < headers.length) {
+    // у формі зʼявилися нові поля — дописуємо заголовки в кінець,
+    // наявні колонки й рядки при цьому не зсуваються
+    var from = sheet.getLastColumn();
+    sheet.getRange(1, from + 1, 1, headers.length - from)
+         .setValues([headers.slice(from)]);
   }
+  sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
   return sheet;
 }
 

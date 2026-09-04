@@ -112,6 +112,8 @@ h1,h2{font-family:inherit;font-weight:700;margin:0;letter-spacing:-.018em}
 .f input[type=date]::-webkit-calendar-picker-indicator{filter:invert(1);opacity:.65;cursor:pointer}
 .f:not(.filled) input[type=date]:not(:focus)::-webkit-datetime-edit{color:transparent}
 .f .note{font-size:12px;color:var(--dimmer);margin-top:8px}
+.f select:disabled{cursor:not-allowed;color:var(--dimmer);border-bottom-style:dashed}
+.f.sel.off::after{opacity:.35}
 
 /* довгі відповіді: підпис стоїть над полем, а поле росте під текст —
    інакше лінія висить за десятки пікселів під першим рядком */
@@ -275,12 +277,13 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
         <h2 tabindex="-1">Особисті<br>дані</h2>
         <div class="fields">
           <div class="f">
-            <input type="text" id="full_name" name="full_name" placeholder=" " required autocomplete="name">
+            <input type="text" id="full_name" name="full_name" placeholder=" " required autocomplete="name"
+                   data-lang="uk-strict">
             <label for="full_name">ПІБ повністю <span class="req">*</span></label>
           </div>
           <div class="f">
-            <input type="date" id="birth_date" name="birth_date" placeholder=" " min="1930-01-01" max="2012-12-31">
-            <label for="birth_date">Дата народження</label>
+            <input type="date" id="birth_date" name="birth_date" placeholder=" " required>
+            <label for="birth_date">Дата народження <span class="req">*</span></label>
           </div>
           <div class="f">
             <input type="tel" id="phone" name="phone" placeholder=" " required
@@ -293,7 +296,8 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
             <label for="email">Email <span class="req">*</span></label>
           </div>
           <div class="f">
-            <input type="text" id="city" name="city" placeholder=" " autocomplete="address-level2">
+            <input type="text" id="city" name="city" placeholder=" " autocomplete="address-level2"
+                   data-lang="uk-strict">
             <label for="city">Місто або область проживання</label>
           </div>
 
@@ -312,7 +316,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
           </div>
         </div>
 
-        <div class="err" id="err1"></div>
+        <div class="err" id="err1" aria-live="polite"></div>
         <div class="nav">
           <button type="button" class="btn btn-primary" data-go="next">Далі</button>
         </div>
@@ -324,7 +328,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
         <h2 tabindex="-1">Освіта</h2>
         <div class="fields">
           <div class="f">
-            <input type="text" id="school" name="school" placeholder=" ">
+            <input type="text" id="school" name="school" placeholder=" " data-lang="uk">
             <label for="school">Останній заклад освіти</label>
           </div>
           <div class="f">
@@ -332,16 +336,19 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
             <label for="graduation_year">Рік закінчення або поточний курс</label>
           </div>
           <div class="f">
-            <input type="text" id="specialty" name="specialty" placeholder=" ">
+            <input type="text" id="specialty" name="specialty" placeholder=" " data-lang="uk">
             <label for="specialty">Спеціальність</label>
           </div>
           <div class="f">
-            <input type="text" id="gpa" name="gpa" placeholder=" " inputmode="decimal">
+            <input type="text" id="gpa" name="gpa" placeholder=" " inputmode="decimal"
+                   autocomplete="off" aria-describedby="gpa_note">
             <label for="gpa">Середній бал атестата або диплома</label>
+            <p class="note" id="gpa_note"></p>
+            <input type="hidden" name="gpa_scale" id="gpa_scale">
           </div>
         </div>
 
-        <div class="err" id="err2"></div>
+        <div class="err" id="err2" aria-live="polite"></div>
         <div class="nav">
           <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
           <button type="button" class="btn btn-primary" data-go="next">Далі</button>
@@ -355,34 +362,25 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
         <p class="hint">Якщо вагаєтеся між програмами — оберіть найближчу, на співбесіді уточнимо.</p>
 
         <div class="fields">
-          <div class="f sel">
-            <select id="program" name="program" required>
-              <option value="" selected disabled hidden></option>
-              <option>Бакалавр богослов’я (очна)</option>
-              <option>Бакалавр практичного служіння (заочна)</option>
-              <option>Магістр богослов’я (заочна)</option>
-              <option>Вчитель недільної школи (сертифікована програма)</option>
-            </select>
-            <label for="program">Програма <span class="req">*</span></label>
-          </div>
-
           <fieldset class="group" data-required="study_form">
             <legend class="q">Форма навчання <span class="req">*</span></legend>
             <div class="opts">
               <label class="opt"><input type="radio" name="study_form" value="Очна"><span>Очна</span></label>
               <label class="opt"><input type="radio" name="study_form" value="Заочна"><span>Заочна</span></label>
-              <label class="opt"><input type="radio" name="study_form" value="Дистанційна"><span>Дистанційна</span></label>
             </div>
           </fieldset>
 
-          <fieldset class="group">
-            <legend class="q">Рівень</legend>
-            <div class="opts">
-              <label class="opt"><input type="radio" name="level" value="Бакалавр"><span>Бакалавр</span></label>
-              <label class="opt"><input type="radio" name="level" value="Магістр"><span>Магістр</span></label>
-              <label class="opt"><input type="radio" name="level" value="Сертифікатна програма"><span>Сертифікатна програма</span></label>
-            </div>
-          </fieldset>
+          <!-- список програм будується з PROGRAMS під обрану форму навчання -->
+          <div class="f sel off">
+            <select id="program" name="program" required disabled aria-describedby="program_note">
+              <option value="" selected disabled hidden></option>
+            </select>
+            <label for="program">Програма <span class="req">*</span></label>
+            <p class="note" id="program_note"></p>
+          </div>
+
+          <!-- рівень задає сама програма, окремо питати немає сенсу -->
+          <input type="hidden" name="level" id="level">
 
           <fieldset class="group">
             <legend class="q">Звідки дізналися про семінарію</legend>
@@ -405,7 +403,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
           </fieldset>
         </div>
 
-        <div class="err" id="err3"></div>
+        <div class="err" id="err3" aria-live="polite"></div>
         <div class="nav">
           <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
           <button type="button" class="btn btn-primary" data-go="next">Далі</button>
@@ -418,20 +416,20 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
         <h2 tabindex="-1">Мотивація</h2>
         <div class="fields">
           <div class="f area">
-            <textarea id="motivation" name="motivation" rows="2"></textarea>
+            <textarea id="motivation" name="motivation" rows="2" data-lang="uk"></textarea>
             <label for="motivation">Чому ви хочете навчатися саме тут?</label>
           </div>
           <div class="f area">
-            <textarea id="application" name="application" rows="2"></textarea>
+            <textarea id="application" name="application" rows="2" data-lang="uk"></textarea>
             <label for="application">Як ви бачите застосування цієї освіти у житті та служінні?</label>
           </div>
           <div class="f area">
-            <textarea id="ministry_experience" name="ministry_experience" rows="2"></textarea>
+            <textarea id="ministry_experience" name="ministry_experience" rows="2" data-lang="uk"></textarea>
             <label for="ministry_experience">Розкажіть про ваш досвід церковного служіння або волонтерства</label>
           </div>
         </div>
 
-        <div class="err" id="err4"></div>
+        <div class="err" id="err4" aria-live="polite"></div>
         <div class="nav">
           <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
           <button type="button" class="btn btn-primary" data-go="next">Далі</button>
@@ -441,11 +439,11 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
       <!-- ---------- 5 ---------- -->
       <section class="step" data-step="5">
         <p class="count">Розділ 5 з 6</p>
-        <h2 tabindex="-1">Рекомендації</h2>
+      <h2 tabindex="-1">Рекомендації</h2>
 
         <div class="fields">
           <div class="f">
-            <input type="text" id="pastor_name" name="pastor_name" placeholder=" ">
+            <input type="text" id="pastor_name" name="pastor_name" placeholder=" " data-lang="uk-strict">
             <label for="pastor_name">ПІБ пастора або наставника</label>
           </div>
           <div class="f">
@@ -453,12 +451,12 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
             <label for="pastor_contact">Телефон або email наставника</label>
           </div>
           <div class="f">
-            <input type="text" id="church" name="church" placeholder=" ">
+            <input type="text" id="church" name="church" placeholder=" " data-lang="uk">
             <label for="church">Назва церкви або громади</label>
           </div>
         </div>
 
-        <div class="err" id="err5"></div>
+        <div class="err" id="err5" aria-live="polite"></div>
         <div class="nav">
           <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
           <button type="button" class="btn btn-primary" data-go="next">Далі</button>
@@ -508,7 +506,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
           </div>
         </div>
 
-        <div class="err" id="err6"></div>
+        <div class="err" id="err6" aria-live="polite"></div>
         <div class="nav">
           <button type="button" class="btn btn-ghost" data-go="prev">Назад</button>
           <button type="submit" class="btn btn-primary" id="submit">Надіслати анкету</button>
@@ -604,44 +602,180 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 
   /* ---------------- валідація ---------------- */
 
+  /* Українська мова. data-lang="uk" — потрібна хоч одна кирилична
+     літера (назва закладу може мати латинську абревіатуру);
+     data-lang="uk-strict" — латиниці не має бути взагалі (ПІБ, місто, церква). */
+  const RE_CYR    = /[\u0400-\u04FF]/;
+  const RE_LAT    = /[A-Za-z]/;
+  const RE_LETTER = /\p{L}/u;
+
+  function langError(el) {
+    const mode = el.dataset.lang;
+    const v = el.value.trim();
+    if (!mode || v === '' || !RE_LETTER.test(v)) return '';
+    if (mode === 'uk-strict' && RE_LAT.test(v))
+      return 'Заповніть українською мовою — латинських літер тут бути не має.';
+    if (!RE_CYR.test(v))
+      return 'Заповніть українською мовою.';
+    return '';
+  }
+
+  /* Дата народження: обовʼязкова, вступ із 16 років. */
+  const MIN_AGE = 16, MAX_AGE = 100;
+
+  function yearsAgo(n) {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setFullYear(d.getFullYear() - n);
+    return d;
+  }
+  function isoDate(d) {
+    return [d.getFullYear(),
+            String(d.getMonth() + 1).padStart(2, '0'),
+            String(d.getDate()).padStart(2, '0')].join('-');
+  }
+
+  function birthError(el) {
+    const v = el.value;
+    if (v === '') return 'Вкажіть дату народження.';
+    const d = new Date(v + 'T00:00:00');
+    if (isNaN(d.getTime())) return 'Перевірте дату народження.';
+    if (d > yearsAgo(MIN_AGE))
+      return 'Вступ можливий із ' + MIN_AGE + ' років. Перевірте дату народження.';
+    if (d < yearsAgo(MAX_AGE))
+      return 'Перевірте дату народження — схоже, у році помилка.';
+    return '';
+  }
+
+  /* Середній бал буває за різними шкалами — визначаємо її за самим числом. */
+  const GPA_SCALES = [
+    { max: 5,   name: '5-бальна'   },
+    { max: 12,  name: '12-бальна'  },
+    { max: 100, name: '100-бальна' }
+  ];
+  const GPA_HINT = 'Приймаємо будь-яку шкалу: 4,8 — за 5-бальною; 10,5 — за 12-бальною; 88 — за 100-бальною.';
+
+  function gpaScale(value) {
+    const n = parseFloat(String(value).replace(',', '.'));
+    if (!isFinite(n) || n < 1) return null;
+    for (let i = 0; i < GPA_SCALES.length; i++)
+      if (n <= GPA_SCALES[i].max) return GPA_SCALES[i];
+    return null;
+  }
+
+  function gpaError(el) {
+    const v = el.value.trim();
+    if (v === '') return '';
+    if (!/^\d{1,3}([.,]\d{1,2})?$/.test(v))
+      return 'Середній бал — це число, наприклад 4,8 або 10,5 або 88.';
+    if (!gpaScale(v))
+      return 'Середній бал має бути від 1 до 100 — за 5-, 12- або 100-бальною шкалою.';
+    return '';
+  }
+
+  /* Рік закінчення або курс: чотири цифри — рік, одна-дві — курс. */
+  function yearError(el) {
+    const v = el.value.trim();
+    if (v === '') return '';
+    const now = new Date().getFullYear();
+    if (/^\d{4}$/.test(v)) {
+      const n = Number(v);
+      if (n < 1950 || n > now + 8)
+        return 'Перевірте рік: очікуємо від 1950 до ' + (now + 8) + '.';
+    } else if (/^\d{1,2}$/.test(v)) {
+      const n = Number(v);
+      if (n < 1 || n > 8)
+        return 'Курс має бути від 1 до 8. Якщо це рік — напишіть його повністю, наприклад 2019.';
+    }
+    return '';
+  }
+
+  /* Телефон: не чіпляємося до формату, лише до кількості цифр. */
+  const PHONE_MSG = 'Перевірте номер. Формат: +380 67 123 45 67.';
+  function digitsOk(v) {
+    return [9, 10, 12].indexOf(v.replace(/\D/g, '').length) > -1;
+  }
+  function phoneError(el) {
+    const v = el.value.trim();
+    return v === '' || digitsOk(v) ? '' : PHONE_MSG;
+  }
+
+  /* Контакт наставника: або телефон, або email. */
+  const RE_MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  function mentorError(el) {
+    const v = el.value.trim();
+    if (v === '') return '';
+    if (v.indexOf('@') > -1)
+      return RE_MAIL.test(v) ? '' : 'Перевірте email наставника: у ньому має бути символ @ і домен.';
+    return digitsOk(v) ? '' : 'Вкажіть телефон наставника або його email.';
+  }
+
+  const RULES = {
+    birth_date:      birthError,
+    gpa:             gpaError,
+    graduation_year: yearError,
+    phone:           phoneError,
+    pastor_contact:  mentorError
+  };
+
   function fieldError(el) {
     if (el.validity.valueMissing) return 'Заповніть це поле, щоб рухатися далі.';
     if (el.type === 'email')      return 'Перевірте адресу: у ній має бути символ @ і домен.';
-    if (el.type === 'tel')        return 'Перевірте номер. Формат: +380 67 123 45 67.';
+    if (el.type === 'tel')        return PHONE_MSG;
     return 'Перевірте це поле.';
   }
 
-  function validate(step) {
-    checkPhone();
-    const box = step.querySelector('.err');
+  /* Наші правила йдуть першими: вони дають точніше повідомлення,
+     ніж загальна перевірка браузера. */
+  function problem(el) {
+    const rule = RULES[el.id];
+    const own = (rule ? rule(el) : '') || langError(el);
+    if (own) return own;
+    if (el.value === '' && !el.required) return '';
+    return el.checkValidity() ? '' : fieldError(el);
+  }
+
+  function mark(el, bad) {
+    el.classList.toggle('invalid', bad);
+    if (bad) el.setAttribute('aria-invalid', 'true');
+    else el.removeAttribute('aria-invalid');
+  }
+
+  /* silent — тільки перевіряємо, нічого не підсвічуємо й не переводимо
+     фокус: потрібно, щоб знайти перший розділ із помилкою перед надсиланням. */
+  function validate(step, silent) {
     let message = '', firstBad = null;
 
     step.querySelectorAll('input,select,textarea').forEach(el => {
-      el.classList.remove('invalid');
-      if (el.type === 'radio' || el.type === 'checkbox' || el.type === 'hidden' || el.closest('.hp')) return;
-      if (el.value === '' && !el.required) return;
-      if (el.checkValidity()) return;
-      el.classList.add('invalid');
-      if (!firstBad) { firstBad = el; message = fieldError(el); }
+      if (!silent) mark(el, false);
+      if (el.type === 'radio' || el.type === 'checkbox' || el.type === 'hidden' ||
+          el.disabled || el.closest('.hp')) return;
+      const msg = problem(el);
+      if (!msg) return;
+      if (!silent) mark(el, true);
+      if (!firstBad) { firstBad = el; message = msg; }
     });
 
     step.querySelectorAll('.group[data-required]').forEach(g => {
-      g.classList.remove('invalid');
+      if (!silent) g.classList.remove('invalid');
       const name = g.dataset.required;
       if (form.querySelector('input[name="' + name + '"]:checked')) return;
-      g.classList.add('invalid');
+      if (!silent) g.classList.add('invalid');
       if (!firstBad) { firstBad = g.querySelector('input'); message = 'Оберіть один із варіантів.'; }
     });
 
     const consent = step.querySelector('#consent');
     if (consent) {
-      consent.closest('.check').classList.toggle('invalid', !consent.checked);
+      if (!silent) consent.closest('.check').classList.toggle('invalid', !consent.checked);
       if (!consent.checked && !firstBad) {
         firstBad = consent;
         message = 'Без згоди на обробку персональних даних ми не можемо прийняти анкету.';
       }
     }
 
+    if (silent) return !message;
+
+    const box = step.querySelector('.err');
     box.textContent = message;
     box.classList.toggle('on', !!message);
     if (firstBad) {
@@ -651,23 +785,107 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
     return !message;
   }
 
-  /* телефон: не чіпляємося до формату, лише до кількості цифр */
-  const phone = document.getElementById('phone');
-  function checkPhone() {
-    const digits = phone.value.replace(/\D/g, '');
-    const ok = phone.value.trim() === '' || [9, 10, 12].indexOf(digits.length) > -1;
-    phone.setCustomValidity(ok ? '' : 'phone');
+  /* Перед надсиланням перевіряємо всі розділи, а не лише останній:
+     до шостого можна дійти й після того очистити поле в першому. */
+  function validateAll() {
+    for (let i = 0; i < TOTAL; i++) {
+      if (validate(steps[i], true)) continue;
+      if (i !== current) { current = i; paint(); }
+      validate(steps[i]);
+      return false;
+    }
+    return true;
   }
-  phone.addEventListener('input', checkPhone);
 
-  /* прибираємо підсвітку помилки, щойно користувач править поле */
-  form.addEventListener('input', e => e.target.classList.remove('invalid'));
+  /* прибираємо підсвітку й текст помилки, щойно користувач править поле */
+  function clearBox(el) {
+    const step = el.closest && el.closest('.step');
+    const box = step && step.querySelector('.err');
+    if (box) { box.textContent = ''; box.classList.remove('on'); }
+  }
+  form.addEventListener('input', function (e) {
+    mark(e.target, false);
+    clearBox(e.target);
+  });
   form.addEventListener('change', function (e) {
     const g = e.target.closest('.group');
     if (g) g.classList.remove('invalid');
     const c = e.target.closest('.check');
     if (c) c.classList.remove('invalid');
+    clearBox(e.target);
   });
+
+  /* ---------------- форма навчання → програма → рівень ---------------- */
+
+  /* Програма жорстко привʼязана до форми навчання й задає рівень,
+     тому форму питаємо першою, а список програм звужуємо під неї. */
+  const PROGRAMS = [
+    { name: 'Бакалавр богослов’я',           form: 'Очна',   level: 'Бакалавр' },
+    { name: 'Бакалавр практичного служіння', form: 'Заочна', level: 'Бакалавр' },
+    { name: 'Магістр богослов’я',            form: 'Заочна', level: 'Магістр' },
+    { name: 'Вчитель недільної школи',       form: 'Заочна', level: 'Сертифікатна програма' }
+  ];
+  const FORM_OF = { 'Очна': 'очної', 'Заочна': 'заочної' };
+
+  const program     = document.getElementById('program');
+  const programNote = document.getElementById('program_note');
+  const levelOut    = document.getElementById('level');
+
+  function setLevel() {
+    const picked = PROGRAMS.filter(p => p.name === program.value)[0];
+    levelOut.value = picked ? picked.level : '';
+  }
+
+  function fillPrograms() {
+    const chosen = form.querySelector('input[name="study_form"]:checked');
+    const value  = chosen ? chosen.value : '';
+    const keep   = program.value;
+
+    program.innerHTML = '<option value="" selected disabled hidden></option>';
+    PROGRAMS.filter(p => p.form === value).forEach(p => {
+      const o = document.createElement('option');
+      o.textContent = p.name;
+      program.appendChild(o);
+    });
+
+    program.disabled = !value;
+    /* програма з попередньої форми більше не дійсна — скидаємо вибір */
+    program.value = PROGRAMS.some(p => p.name === keep && p.form === value) ? keep : '';
+    programNote.textContent = value
+      ? 'Показані програми ' + FORM_OF[value] + ' форми навчання.'
+      : 'Спочатку оберіть форму навчання.';
+
+    const wrap = program.parentElement;
+    wrap.classList.toggle('off', !value);
+    wrap.classList.toggle('filled', !!program.value);
+    mark(program, false);
+    setLevel();
+  }
+
+  form.querySelectorAll('input[name="study_form"]')
+      .forEach(r => r.addEventListener('change', fillPrograms));
+  program.addEventListener('change', setLevel);
+  fillPrograms();
+
+  /* ---------------- середній бал: підказка й шкала ---------------- */
+
+  const gpa     = document.getElementById('gpa');
+  const gpaNote = document.getElementById('gpa_note');
+  const gpaOut  = document.getElementById('gpa_scale');
+
+  function showScale() {
+    const s = gpa.value.trim() === '' ? null : gpaScale(gpa.value);
+    gpaOut.value = s ? s.name : '';
+    gpaNote.textContent = s ? 'Шкала оцінювання: ' + s.name + '.' : GPA_HINT;
+  }
+  gpa.addEventListener('input', showScale);
+  showScale();
+
+  /* ---------------- дата народження: межі для календаря ---------------- */
+
+  const birth = document.getElementById('birth_date');
+  birth.min = isoDate(yearsAgo(MAX_AGE));
+  birth.max = isoDate(yearsAgo(MIN_AGE));
 
   /* довга відповідь росте під текст, щоб лінія трималася під останнім рядком */
   areas.forEach(function (t) {
@@ -734,7 +952,7 @@ fieldset{border:0;margin:0;padding:0;min-width:0}
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    if (!validate(steps[current])) return;
+    if (!validateAll()) return;
 
     const formData = new FormData(form);
 
