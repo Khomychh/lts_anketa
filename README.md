@@ -20,11 +20,18 @@
 Дані йдуть одним запитом при натисканні «Надіслати анкету»:
 
 ```js
-fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: formData })
+fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors',
+       body: new URLSearchParams(formData) })
 ```
 
 Через `mode: 'no-cors'` відповідь сервера непрочитувана (opaque), тому екран подяки
 показується оптимістично — одразу після того, як `fetch` не кинув виняток.
+
+> **Не надсилайте `FormData` напряму.** Тоді тіло піде як `multipart/form-data`,
+> а Apps Script розбирає в `e.parameter` лише `application/x-www-form-urlencoded`.
+> Запит пройде успішно, аркуш створиться, але в рядку буде сама позначка часу —
+> всі колонки порожні. `new URLSearchParams(formData)` дає потрібний тип тіла
+> і водночас лишається «простим» запитом, дозволеним у `no-cors`.
 
 **Захист від ботів.** У формі є приховане поле `website`, винесене за екран
 (`left:-9999px`, не `display:none`), з `tabindex="-1"` і `autocomplete="off"`.
